@@ -1,0 +1,73 @@
+\usepackage[a4paper, margin=1in]{geometry}
+\linespread{1.5}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{10pt}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{} 
+
+\renewcommand{\sectionmark}[1]{%
+  \markright{#1} 
+}
+
+\makeatletter
+\renewcommand{\section}{\@startsection{section}{1}{\z@}%
+  {-3.5ex \@plus -1ex \@minus -.2ex}%
+  {2.3ex \@plus.2ex}%
+  {\normalfont\Large\bfseries}}
+\makeatother
+
+\newcommand{\chapterformat}[1]{%
+  \refstepcounter{chapter} 
+  \markboth{#1}{} 
+  \addcontentsline{toc}{chapter}{\thechapter\hspace{1em}#1}
+
+  \vspace*{1cm} 
+  \noindent
+  \begin{minipage}[t]{0.4\textwidth}
+    {\Huge \textbf{Chapter \thechapter}}
+  \end{minipage}
+  \begin{minipage}[t]{0.1\textwidth}
+    \vspace{-0.8cm}
+    \rule{0.5mm}{9ex}
+  \end{minipage}
+  \hspace{0.5cm}
+  \begin{minipage}[t]{0.45\textwidth}
+    \vspace{1ex}
+    {\Large \textbf{#1}} 
+  \end{minipage}
+}
+
+
+\fancyhead[RO]{\nouppercase{\leftmark}} 
+\fancyhead[LE]{\nouppercase{\rightmark}}
+
+\fancyhead[RE]{\includegraphics[height=5mm]{figures/pngs/tu-wien-logo-vector.eps}} 
+\fancyhead[LO]{\includegraphics[height=5mm]{figures/pngs/tu-wien-logo-vector.eps}} 
+
+\fancyhead[C]{\thepage} 
+
+
+\setlength{\headheight}{25pt}
+
+\newcommand{\firstauthorfirstname}{Tobias }
+\newcommand{\firstauthorlastname}{Slowiak }
+
+\newcommand{\secondauthorfirstname}{Second }
+\newcommand{\secondauthorlastname}{Author }
+
+\newcommand{\doctitle}{Mechanical FEM Simulation of Sampled Nanomembranes for Mass Detection}
+
+\hypersetup{
+  pdfinfo={
+    Title={\doctitle},
+    Subject={Master's Thesis},
+    Author={\firstauthorfirstname \firstauthorlastname, \secondauthorfirstname \secondauthorlastname},
+    Keywords={Masters Thesis, TU Vienna, Finite Element Methos, Computational Science and Engineering, Python, NGSolve, NEMS}
+  }
+}
+
+\titleformat{\chapter}[display]
+  {\normalfont\huge\bfseries}{\chaptertitlename\ \thechapter}{20pt}{\Huge}
+\titlespacing*{\chapter}{0pt}{0pt}{40pt}

@@ -1,0 +1,490 @@
+\chapterformat{Theory}
+In this chapter, the theoretical background relevant to this thesis is presented. Some sections are kept brief, as they concern well-known results that can be found in the literature. Other aspects are explained in more detail, since the derivations are typically presented in a more general form in standard references such as \cite{Braess_2007}, whereas here they are adapted to the use case of this thesis.\\
+
+\section{The Finite Element Method (FEM)}
+This section provides a concise introduction to the finite element method (FEM), with the goal of defining the necessary nomenclature for readers who may not be familiar with the mathematical details. A comprehensive introduction can be found in \cite{Braess_2007}. The following presentation is based on \cite{Faustmann22}.\\
+
+We illustrate the basic concepts of FEM using the simplest non-trivial model problem: the one-dimensional Poisson problem, which is find $u:\mathbb{R}\rightarrow\mathbb{R}$ such that
+\begin{equation}
+    -u''(x)=f(x)\,, \forall x\in (0,1),
+    \label{eq:poisson}
+\end{equation}
+where $f:\mathbb{R}\rightarrow\mathbb{R}$ and the domain is denoted by $\Omega = (0,1)$. Homogeneous Dirichlet boundary conditions are imposed on $\partial \Omega = \{0,1\}$,
+\begin{equation}
+    u(0)=u(1)=0.
+\end{equation}
+Note that equation \eqref{eq:poisson} is not itself a partial differential equation (PDE)—as is typically the case in FEM applications—but the arguments presented here extend naturally to the higher-dimensional Poisson equation $\Delta u = f$.\\
+
+In FEM, instead of solving the original strong form of equation \eqref{eq:poisson}, we solve its so-called \textit{weak form}. This is obtained by multiplying the equation by a test function $v$ (which must satisfy homogeneous Dirichlet boundary conditions, as will be explained later) and integrating over the domain:
+\begin{equation*}
+    \int_\Omega -u''v\,dx = \int_\Omega f v\,dx.
+\end{equation*}
+This procedure both relaxes the differentiability requirements on $u$ and brings the equation into a form more suitable for discretization. Applying integration by parts yields
+\begin{equation*}
+    -u'v\Big|_0^1 + \int_\Omega u'v'\,dx = \int_\Omega f v\,dx,
+\end{equation*}
+and, since the test functions vanish on the boundary due to the homogeneous Dirichlet condition, the boundary term disappears. The weak form of the problem therefore reads: Find $u$ such that
+\begin{equation}
+    \int_\Omega u'v'\,dx = \int_\Omega f v\,dx\,\,\,\forall v.
+    \label{eq:weakpoisson}
+\end{equation}
+
+So far we have not discussed the function spaces to which $u$ and $v$ belong. In the strong formulation \eqref{eq:poisson}, $u$ must be at least twice continuously differentiable, which is too restrictive for many applications. In contrast, the weak formulation only requires $u,v\in L^2(\Omega)$ and $u',v' \in L^2(\Omega)$, i.e. that the functions and their first derivatives are square-integrable. In FEM theory this is formalized using \textit{Sobolev spaces}. In this thesis, all functions are assumed to lie in the Sobolev space $H^1(\Omega)$, which is the space of functions that are square-integrable together with their weak first derivatives. Intuitively, functions in $H^1$ are continuous and differentiable almost everywhere, except possibly at a set of points where the derivative may exhibit controlled jumps. The subspace $H^1_0(\Omega)$ denotes those functions in $H^1(\Omega)$ that also satisfy homogeneous Dirichlet boundary conditions.\\
+
+It is convenient to define the left-hand side of equation \eqref{eq:weakpoisson} as the \textit{bilinear form} $a:H^1(\Omega)\times H^1(\Omega)\rightarrow\mathbb{R}$
+\begin{equation*}
+    a(u,v) = \int_\Omega u'v'\,dx,
+\end{equation*}
+and the right-hand side as the \textit{linear form} $l:H^1(\Omega)\rightarrow\mathbb{R}$
+\begin{equation*}
+    l(v) = \int_\Omega f v\,dx.
+\end{equation*}
+Both $a$ and $l$ are linear in their respective arguments, as integration and differentiation are linear operations. This structure will later enable us to assemble a linear system of equations corresponding to the discretized problem.\\
+
+Since $v$ is arbitrary, the weak formulation can now be stated as: Find $u$ such that
+\begin{equation}
+    a(u,v) = l(v) \quad \forall v \in H^1_0(\Omega).
+    \label{eq:weakgeneral}
+\end{equation}
+
+Next, we discretize the domain into \textit{finite elements}. In one dimension, this corresponds to decomposing $\Omega = (0,1)$ into subintervals $T_i = (x_i, x_{i+1})$, $i=0,\ldots,N$, where the points $\{x_i\}$ are chosen within the domain. The set of subintervals $\mathcal{T} = \{T_i, i=0,\ldots,N\}$ is called a \textit{mesh} on $\Omega$, and the points $\mathcal{N} = \{x_i, i=0,\ldots,N+1\}$ are the \textit{nodes} of the mesh. On this mesh we define simple \textit{basis functions} that take the value 1 at a given node and 0 at all others. The simplest such functions are piecewise linear, although higher-order basis functions (piecewise quadratic, cubic, etc.) can also be used. An illustration of a piecewise linear basis function $\varphi_i:\Omega \to \mathbb{R}$ associated with node $x_i$ is shown in Figure \ref{fig:hatfct}.
+\begin{figure}
+\centering
+    \begin{tikzpicture}
+      \begin{axis}[
+        axis lines=middle,
+        xlabel={$x$},
+        ylabel={$\varphi_i(x)$},
+        xtick={0},
+        ytick={0,1},
+        ymin=-0.3, ymax=1.2,
+        xmin=-0.5, xmax=2.5,
+        domain=-0.5:2.5,
+        samples=200,
+        enlargelimits=false,
+        width=10cm,
+        height=5cm,
+        every axis x label/.style={at={(current axis.right of origin)}, anchor=west},
+        every axis y label/.style={at={(current axis.above origin)}, anchor=south},
+      ]
+    
+      % Draw the hat function
+      \addplot[
+        thick,
+        blue,
+        domain=0:2,
+      ]
+      {x<0.5 ? 0 : (x < 1 ? 2*x-1 : (x < 1.5 ? (3 - 2*x) : 0))};
+
+      % Mark the nodes
+      \addplot[only marks, mark=*] coordinates {(0.5,0) (1,0) (1.5,0)};
+      \node[below] at (axis cs:0.5,0) {$x_{i-1}$};
+      \node[below] at (axis cs:1,0) {$x_i$};
+      \node[below] at (axis cs:1.5,0) {$x_{i+1}$};
+    
+      \end{axis}
+    \end{tikzpicture}
+    \caption{Visualization of the piecewise linear basis function $\varphi_i$.}
+    \label{fig:hatfct}
+\end{figure}
+
+A \textit{finite element space} $V_{h}\subset H^1(\Omega)$ (or, in general, $H^n(\Omega)$ for some $n$) consists of all functions that can be expressed as linear combinations of such basis functions on a given mesh. The parameter $h$ typically refers to a characteristic size of the elements—in one dimension, the (semi-uniform) lengths of the subintervals. In \ngsolve, the polynomial order of the basis functions is specified by the variable \texttt{order} (\texttt{order} = 1 for linear, 2 for quadratic, etc.). Higher-order elements generally provide more accurate solutions at the cost of increased computational effort and higher regularity requirements.\\
+
+In FEM we therefore seek a solution $u_h \in V_{h,0}\subset H^1_0(\Omega)$ such that equation \eqref{eq:weakgeneral} holds for all $v_h \in V_{h,0}$. Since the equation is linear in both $u$ and $v$, it suffices to require that it holds for each basis function $\varphi_i$. Thus, the discretized problem is: find $u_h \in V_{h,0}$ such that
+\begin{equation}
+    a(u_h,\varphi_i) = l(\varphi_i) \quad \forall i \in \{1,\ldots,N\}.
+    \label{eq:weakbasis}
+\end{equation}
+Intuitively, each basis function “tests’’ $u_h$ at its associated node, which is why $v_h$ is referred to as a \textit{test function}. For Dirichlet problems, the values of $u_h$ at boundary nodes are fixed, and therefore do not need to be tested—this explains why $v_h$ is required to vanish on $\partial \Omega$.\\
+
+We now expand $u_h$ as a linear combination of basis functions,
+\[
+u_h(x) = \sum_{j=1}^N u_j \varphi_j(x),
+\]
+where $\fatu = (u_1,\ldots,u_{N})^T \in \mathbb{R}^N$ collects the coefficients. Inserting this expansion into equation \eqref{eq:weakbasis} yields
+\begin{equation}
+    \sum_{j=1}^N u_j \, a(\varphi_j,\varphi_i) = l(\varphi_i) \quad \forall i \in \{1,\ldots,N\}.
+\end{equation}
+Defining the \textit{stiffness matrix} $\fatA = (a(\varphi_i, \varphi_j))_{ij} \in \mathbb{R}^{N\times N}$ and the \textit{load vector} $\mathbf{l} = (l(\varphi_1),\ldots,l(\varphi_N))^T \in \mathbb{R}^N$, we arrive at the assembled linear system
+\begin{equation*}
+    \fatA \fatu = \mathbf{l},
+\end{equation*}
+which can be solved to obtain the finite element approximation $u_h$ of $u$.
+
+
+
+\section{Eigenvalue problems in the finite element method}
+\label{sec:eigenvalue_problems}
+In the following, we discuss the solution of eigenvalue problems arising from the two-dimensional wave equation. As shown later in section \ref{sec:wave_pde}, the FEM discretization of the 2D wave PDE leads to the generalized eigenvalue problem
+\begin{equation*}
+    \fatA \fatu = \omega^2 \fatM \fatu,
+\end{equation*}
+where we seek eigenvectors $\fatu_i \in \mathbb{R}^N$ of the matrix $\fatM^{-1}\fatA \in \mathbb{R}^{N\times N}$ with corresponding eigenvalues $\omega_i^2 \in \mathbb{R}$. Here, $N$ denotes the number of degrees of freedom (nodes) in the mesh. For solving this problem we employ the preconditioned inverse iteration (PINVIT) method, see \cite{KNYAZEV+NEYMEYR}. The implementation used in this thesis is adapted from \cite{NGSolveEig}.\\
+
+The classical inverse iteration for the eigenvalue problem
+\[
+\fatA \fatu = \lambda \fatu
+\]
+is given by the recurrence
+\[
+\fatu^{k+1} = \fatA^{-1}\fatu^k,
+\]
+where the iterates $\fatu^k$ converge to the eigenvector $\fatu_1$ associated with the smallest eigenvalue $\lambda_1$ of $\fatA$. The convergence rate is $\lambda_1/\lambda_2$, where $\lambda_2$ is the second-smallest eigenvalue, see \cite{Melenk21}. Despite its name, PINVIT is not a direct inverse iteration, but rather a gradient descent method that, in a special case, coincides with inverse iteration, as we will see below.\\
+
+To improve convergence, instead of solving
+\[
+\fatA \fatu = \omega^2 \fatM \fatu,
+\]
+we employ a preconditioner $\fatC^{-1} \approx \fatA^{-1}$ to solve the equivalent problem
+\[
+\fatC^{-1}\fatA \fatu = \omega^2 \fatC^{-1}\fatM \fatu.
+\]
+In general, the iteration converges slowly if $\fatA$ has a large condition number. By choosing $\fatC^{-1} \approx \fatA^{-1}$, the condition number of $\fatC^{-1}\fatA$ is close to optimal, ideally approaching that of the identity matrix. More precisely, if $\fatC$ and $\fatA$ are spectrally equivalent, i.e., there exist constants $\gamma_1,\gamma_2>0$ such that
+\[
+\gamma_1 \fatu^T \fatC \fatu \leq \fatu^T \fatA \fatu \leq \gamma_2 \fatu^T \fatC \fatu \quad \forall \fatu \in \mathbb{R}^N,
+\]
+then the Rayleigh quotient (defined below) converges to the smallest eigenvalue with rate $\sigma^2$, where
+\[
+\sigma = \gamma + (1-\gamma)\frac{\lambda_1}{\lambda_{2}}, \quad 
+\gamma = \frac{\gamma_1 - \gamma_2}{\gamma_1 + \gamma_2},
+\]
+see \cite{Faustmann+Melenk24}.\\
+
+The \textit{Rayleigh quotient} is defined as
+\[
+\rho(\fatu) = \frac{\fatu^T \fatC^{-1}\fatA \fatu}{\fatu^T \fatC^{-1}\fatM \fatu},
+\]
+which equals an eigenvalue $\omega_i^2$ if $\fatu$ is the corresponding eigenvector $\fatu_i$. Starting from a randomly chosen initial vector $\fatu^0$, we apply a gradient descent method following $\nabla \rho(\fatu^k)$ for the $k$-th iterate $\fatu^k$ to approximate the smallest eigenvalue. To do this, we compute $\nabla \rho(\fatu^k)$. Consider
+\[
+\rho(\fatu + \varepsilon \fatv) =
+\frac{(\fatu + \varepsilon \fatv)^T \fatC^{-1}\fatA (\fatu + \varepsilon \fatv)}{(\fatu + \varepsilon \fatv)^T \fatC^{-1}\fatM (\fatu + \varepsilon \fatv)}
+\]
+for small $\varepsilon>0$ and arbitrary direction $\fatv$. Expanding in $\varepsilon$ gives
+\[
+\rho(\fatu + \varepsilon \fatv) =
+\frac{\fatu^T \fatC^{-1}\fatA \fatu + 2\varepsilon \fatu^T \fatC^{-1}\fatA \fatv + \mathcal{O}(\varepsilon^2)}{\fatu^T \fatC^{-1}\fatM \fatu}\cdot
+\frac{1}{1 + 2\varepsilon \frac{\fatu^T \fatC^{-1}\fatM \fatv}{\fatu^T \fatC^{-1}\fatM \fatu} + \mathcal{O}(\varepsilon^2)}.
+\]
+Using the approximation $1/(1+x) \approx 1-x$ for small $x$ and dropping the $\mathcal{O}(\varepsilon^2)$ terms, we obtain
+\[
+\rho(\fatu + \varepsilon \fatv) \approx
+\left(\rho(\fatu) + \frac{2\varepsilon \fatu^T \fatC^{-1}\fatA \fatv}{\fatu^T \fatC^{-1}\fatM \fatu}\right)
+\left(1 - 2\varepsilon \frac{\fatu^T \fatC^{-1}\fatM \fatv}{\fatu^T \fatC^{-1}\fatM \fatu}\right).
+\]
+Expanding and rearranging terms, while dropping $\mathcal{O}(\varepsilon^2)$ terms, yields
+\[
+\rho(\fatu + \varepsilon \fatv) \approx
+\rho(\fatu) + \frac{2\varepsilon}{\fatu^T \fatC^{-1}\fatM \fatu}\,
+\left(\fatu^T \fatC^{-1}\fatA - \rho(\fatu)\, \fatu^T \fatC^{-1}\fatM\right)\fatv.
+\]
+Comparing coefficients with the Taylor expansion
+\[
+\rho(\fatu + \varepsilon \fatv) \approx \rho(\fatu) + \varepsilon\, \nabla \rho^T \fatv,
+\]
+we identify
+\[
+\nabla \rho^T = \frac{2}{\fatu^T \fatC^{-1}\fatM \fatu}
+\left(\fatu^T \fatC^{-1}\fatA - \rho(\fatu)\, \fatu^T \fatC^{-1}\fatM\right).
+\]
+Equivalently
+\[
+\nabla \rho = \frac{2}{\fatu^T \fatC^{-1}\fatM \fatu}
+\left(\fatC^{-1}\fatA \fatu - \rho(\fatu)\, \fatC^{-1}\fatM \fatu\right),
+\]
+since all matrices are symmetric. The symmetry of $\fatA$ and $\fatM$ are shown in section \ref{sec:wave_pde} and with the multigrid preconditioner used, $\fatC^{-1}$ is also symmetric according to \cite{NGSolveMG}.\\ 
+Note that $\nabla \rho$ contains the residual
+\[
+\mathbf{R}(\fatu) = \fatC^{-1}\fatA \fatu - \rho(\fatu)\, \fatC^{-1}\fatM \fatu
+\]
+of the eigenvalue problem. As will be seen later, the magnitude of $\nabla \rho$ does not affect the gradient descent algorithm. Thus, since $\nabla \rho \propto \mathbf{R}(\fatu)$, the descent can equivalently follow the residual.\\
+
+\begin{itshape}
+    \textbf{Remark:} In the special case $\fatC^{-1}=\fatA^{-1}$, a standard gradient descent with step size 1 gives the iteration
+    \[
+    \fatu^{k+1} = \fatu^k - \mathbf{R}(\fatu^k) = \rho(\fatu^k)\, \fatA^{-1}\fatM \fatu^k,
+    \]
+    which coincides (up to the scalar factor $\rho(\fatu^k)$) with the classical inverse iteration of the eigenvalue problem $\fatM^{-1}\fatA\fatu=\lambda\fatu$.
+\end{itshape}
+
+Instead of using standard gradient descent with a fixed step size $\alpha$, we apply a Rayleigh–Ritz projection of the eigenvalue problem into the subspace $\mathrm{span}(\fatu^k, \mathbf{R}(\fatu^k))$ and solve the reduced $2\times 2$ eigenvalue problem
+\begin{equation*}
+    \begin{pmatrix}
+        (\fatu^k)^T\\
+        \mathbf{R}(\fatu^k)^T
+    \end{pmatrix}
+    \fatC^{-1}\fatA
+    \begin{pmatrix}
+        \fatu^k & \mathbf{R}(\fatu^k)
+    \end{pmatrix}
+    \faty
+    =
+    \left(\omega^k\right)^2
+    \begin{pmatrix}
+        (\fatu^k)^T\\
+        \mathbf{R}(\fatu^k)^T
+    \end{pmatrix}
+    \fatC^{-1}\fatM
+    \begin{pmatrix}
+        \fatu^k & \mathbf{R}(\fatu^k)
+    \end{pmatrix}
+    \faty,
+\end{equation*}
+for $\faty^T=(y_1,y_2) \in \mathbb{R}^2$ and $\omega^k$ being the $k$-th approximate of the eigenvalue $\omega$, yielding the new iterate
+\[
+\fatu^{k+1} = y_1 \fatu^k + y_2 \mathbf{R}(\fatu^k).
+\]
+
+In practice, we are usually interested in computing several of the smallest eigenpairs. Suppose we want the first $n$ eigenvectors and eigenvalues. We then propagate $n$ iterates ${}^{j}\fatu^k$ for $j=1,\ldots,\mathrm{n}$ and solve the eigenvalue problem in the subspace
+\[
+\mathrm{span}({}^{1}\fatu^k, \mathbf{R}({}^{1}\fatu^k), \ldots, {}^{\mathrm{n}}\fatu^k, \mathbf{R}({}^{\mathrm{n}}\fatu^k)),
+\]
+to obtain $\faty \in \mathbb{R}^{2\,\mathrm{n}}$ and update
+\[
+{}^{j}\fatu^{k+1} = y_{2j-1}\, {}^{j}\fatu^k + y_{2j}\, \mathbf{R}({}^{j}\fatu^k), \quad j=1,\ldots,\mathrm{n/2}.
+\]
+To ensure that the iterates ${}^{j}\fatu^k$ converge to distinct eigenvectors, one may orthogonalize them in each step (see \cite{Melenk21}). However, in our case this is not necessary, since solving the eigenvalue problem in the Rayleigh–Ritz subspace preserves the rank of $\mathrm{span}(\{{}^{j}\fatu^k\})$, as shown in \cite[Lemma 3.1]{Neymeyr02}.
+
+
+
+
+
+
+
+\section{PDEs and weak formulation}
+The simulation is purely mechanical; no thermal or electrical effects are considered. We study two coupled PDEs: first, the elasticity equation, which must be solved due to the inhomogeneous prestress in the membrane. This inhomogeneity arises from prestress in the electrode material, which adds to the intrinsic prestress of the membrane material ($\mathrm{SiN}$). In addition, applied samples may also introduce prestress. The second equation is the standard wave equation on the membrane. The two PDEs are coupled in a forward manner: the stress field on the membrane is first computed from the elasticity equation and subsequently used as a coefficient function in the wave equation. \\
+
+\subsection{Elasticity PDE}
+\label{sec:ela_pde}
+The PDE governing elasticity in solid bodies is well known and can be found in standard references (e.g. \cite{fung2001classical}). Solid mechanics of prestressed structures appears less frequently in textbooks, but the theory is nevertheless well established. For my own understanding, I derived the governing PDE in a slightly different way than the classical approach, presented in Appendix \ref{sec:derivation_elasticity}. This derivation yields
+\begin{equation}
+    \nabla \cdot \fatsig = \mathbf{g},
+    \label{eq:solid_mechanics}
+\end{equation}
+where $\fatsig:\mathbb{R}^2 \rightarrow \mathbb{R}^{2\times 2}$ is the stress tensor and $\mathbf{g}:\mathbb{R}^2 \rightarrow \mathbb{R}^2$ is an external force density. Since no external forces act on the membrane, we set $\mathbf{g}=\mathbf{0}$, leading to the static equilibrium equation
+\begin{equation}
+    \nabla \cdot \fatsig = \mathbf{0}.
+    \label{eq:statics}
+\end{equation}
+
+When loaded, a body deforms, described by the displacement field $\fatu:\mathbb{R}^2 \rightarrow \mathbb{R}^2$. Intuitively, the displacement induces internal stresses that counteract the external ones, such that the total stress is in equilibrium. These internal stresses are given by the constitutive relation. Assuming an ideal, linear elastic, isotropic material, the stress–strain relation reads
+\begin{equation}
+    \fatsig = 2 \mu \fateps + \lambda \, \mathrm{trace}(\fateps)\, \mathbf{1},
+\end{equation}
+where $\mu$ and $\lambda$ are the Lamé constants, and $\fateps$ is the strain tensor, defined as
+\begin{equation}
+    \fateps = \tfrac{1}{2}\left(\nabla\fatu + (\nabla\fatu)^T\right).
+    \label{eq:strain_displacement_relation}
+\end{equation}
+This relation is derived in Appendix \ref{sec:derivation_elasticity}. In our case, somewhat unusually, the Lamé constants are spatially varying, $\mu,\lambda:\mathbb{R}^2 \rightarrow \mathbb{R}$, because they depend on the Young’s modulus $E$ and Poisson ratio $\nu$, which differ in regions where the membrane is perforated (see section \ref{sec:derivation_elasticity}).\\
+
+The Lamé constants are given by
+\begin{align*}
+    \mu &= \frac{E}{2(1+\nu)},\\
+    \lambda &= \frac{E \nu}{1-\nu^2},
+\end{align*}
+where $E=E(x,y)$ and $\nu=\nu(x,y)$. Effective parameters on perforated regions follow \cite{IPerf}.\\
+
+Equation \eqref{eq:statics} is solved on the domain $\Omega = (0,L)^2$, representing the membrane, with $L= \SI{1}{\milli\meter}$ in the reference case. The membrane material ($\silnit$) has an intrinsic prestress $\sigma_\silnit$, giving rise to the prestress tensor
+\begin{equation*}
+    \fatsig_\silnit (\fatx )=  
+    \begin{pmatrix}
+        \sigma_\silnit & 0\\ 
+        0 & \sigma_\silnit
+    \end{pmatrix},
+    \quad \fatx \in \Omega.
+\end{equation*}
+
+The electrodes, made from $\gold$ and $\chro$, also carry prestress, denoted $\sigma_\gold$ and $\sigma_\chro$. Their contributions are
+\begin{equation*}
+    \fatsig_{\gold} (\fatx )= 
+    \begin{pmatrix}
+        \sigma_\gold & 0\\ 
+        0 & \sigma_\gold
+    \end{pmatrix}, \qquad
+    \fatsig_\chro (\fatx )= 
+    \begin{pmatrix}
+        \sigma_\chro & 0\\ 
+        0 & \sigma_\chro
+    \end{pmatrix},
+    \quad \fatx \in E,
+\end{equation*}
+where $E = E_l \cup E_r \subset \Omega$ is the electrode region, explicitly defined later in equations \eqref{eq:domain_left_electrode} and \eqref{eq:domain_right_electrode}.\\
+
+The total stress on the membrane is
+\[
+\fatsig = \fatsig_{\silnit} + \fatsig_{\gold} + \fatsig_{\chro} + \fatsig_{\fatu},
+\]
+where $\fatsig_\fatu$ is the displacement-induced stress. Summing the prestresses as $\fatsig_p = \fatsig_{\silnit} + \fatsig_{\gold} + \fatsig_{\chro}$ and inserting into equation \eqref{eq:statics} gives
+\begin{align}
+    \nabla\cdot\fatsig &= \mathbf{0}, \nonumber \\
+    \nabla\cdot(\fatsig_p+\fatsig_\fatu) &= \mathbf{0}, \nonumber \\
+    -\nabla\cdot\fatsig_\fatu &= \nabla\cdot\fatsig_p. 
+    \label{eq:prestressed_statics}
+\end{align}
+Equation \eqref{eq:prestressed_statics} may be interpreted as the standard linear elasticity equation \eqref{eq:statics} with the divergence of the prestress acting as an “effective external force.” In our case, $\fatsig_p$ is piecewise constant and can be expressed via a Heaviside function. The divergence of a 2D Heaviside function yields a 2D delta distribution. We therefore define
+\[
+\mathbf{f} = \nabla\cdot\fatsig_p,
+\]
+so that $\mathbf{f}$ is a distribution supported on $\partial E$, normal to $\partial E$, and pointing outward from $E$, which will be explicitly formulated below.\\
+
+This leads to the PDE
+\begin{equation*}
+    -\nabla\cdot\fatsig_\fatu = \mathbf{f}.
+\end{equation*}
+
+To apply the finite element method, we derive the weak formulation (see e.g. \cite{Braess_2007}). Multiplying by a test function $\fatv:\mathbb{R}^2\to\mathbb{R}^2$ and integrating over $\Omega$ gives
+\begin{equation*}
+    -\int_\Omega (\nabla\cdot\fatsig_\fatu)\cdot \fatv \, dA 
+    = \int_\Omega \mathbf{f}\cdot \fatv \, dA.
+\end{equation*}
+Using the product rule
+\[
+\nabla\cdot(\fatsig_\fatu \fatv) = (\nabla\cdot\fatsig_\fatu)\cdot \fatv + \fatsig_\fatu : \nabla \fatv,
+\]
+and the divergence theorem, we obtain
+\[
+\int_\Omega (\nabla\cdot\fatsig_\fatu)\cdot \fatv \, dA 
+= \int_{\partial \Omega} (\fatsig_\fatu \fatv)\cdot \mathbf{n}\, dS
+- \int_\Omega \fatsig_\fatu : \nabla \fatv \, dA.
+\]
+Thus,
+\begin{equation*}
+    -\int_{\partial \Omega} (\fatsig_\fatu \fatv)\cdot \mathbf{n}\, dS
+    + \int_\Omega \fatsig_\fatu : \nabla \fatv \, dA
+    = \int_\Omega \mathbf{f}\cdot \fatv \, dA.
+\end{equation*}
+Since the membrane is clamped along its edges, we impose Dirichlet boundary conditions, so $\fatv$ vanishes on $\partial \Omega$. This yields the weak form
+\begin{equation}
+    \int_\Omega \fatsig_\fatu : \nabla \fatv \, dA
+    = \int_\Omega \mathbf{f}\cdot \fatv \, dA,
+    \label{eq:weak_ela}
+\end{equation}
+i.e. find $u \in H^1_0(\Omega)^2$ such that equation \eqref{eq:weak_ela} holds.\\
+
+The corresponding bilinear form $a:H^1_0(\Omega)^2\times H^1_0(\Omega)^2 \to \mathbb{R}$ is
+\begin{equation}
+    a(u,v) := \int_\Omega \left(2\mu\, \fateps(\fatu) + \lambda\, \mathrm{trace}(\fateps(\fatu))\, \mathbf{1}\right) : \nabla \fatv \, dA,
+\end{equation}
+with $\fateps(\fatu)$ given in equation \eqref{eq:strain_displacement_relation}.\\
+
+The stress as a function of strain is implemented in code in the function \texttt{stress}.\\
+
+As noted, $\mathbf{f} = \nabla \sigma_p$, with $\sigma_p$ a scalar prestress function. Although $\fatsig_p$ is matrix-valued, it is diagonal with $(\fatsig_p)_{11}=(\fatsig_p)_{22} = \sigma_p$. Hence,
+\begin{equation*}
+    \nabla\cdot\fatsig_p =
+    \begin{pmatrix}
+        \partial \sigma_p / \partial x \\
+        \partial \sigma_p / \partial y
+    \end{pmatrix}
+    = \nabla \sigma_p.
+\end{equation*}
+We therefore focus on computing $\nabla \sigma_p$, where $\sigma_p:\mathbb{R}^2 \to \mathbb{R}$ is a Heaviside-type function with discontinuities along curves defined implicitly by $\phi(x,y)=0$. For brevity, we only consider the left electrode; the remaining regions (right electrode, perforation, sample) can be modeled analogously. The electrode is parabola-shaped, such that there exist $a,b,c\in\mathbb{R}$ and an electrode width $w_e\in\mathbb{R}$ for which
+\[
+\phi_l=a\,y^2+b\,y+c-w_e/2-x
+\]
+defines the left boundary and
+\[
+\phi_r=a\,y^2+b\,y+c+w_e/2-x
+\]
+defines the right boundary of the left electrode, as shown in equation \eqref{eq:domain_left_electrode}. Consider any point $(x_0,y_0)$ on $\phi_l$. Then, for $x<x_0$, one has $\phi_l(x,y_0)>0$, and vice versa. The function $-\phi_l(x,y)\cdot \phi_r(x,y)$ is positive if and only if $(x,y)$ lies within the boundaries of the left electrode. The stress can therefore be written as
+\[
+\sigma_p(x,y) = \sigma_{\silnit} + \sigma_{\mathrm{add}} H(-\phi_l(x,y)\cdot \phi_r(x,y)) .
+\]
+with
+\[
+\sigma_\mathrm{add}=\sigma_\gold + \sigma_\chro.
+\]
+This is implemented in \texttt{generate\_sig\_fct}. With $H:\mathbb{R}\to\mathbb{R}$ denoting the Heaviside step function, the chain rule yields
+\begin{equation*}
+    \nabla \sigma_p = \sigma_{\mathrm{add}}\, \delta(-\phi_l\cdot \phi_r)\, \nabla(- \phi_l\cdot \phi_r)=-\sigma_{\mathrm{add}}\, \delta(-\phi_l\cdot \phi_r)\, ( \nabla\phi_l\cdot \phi_r+\phi_l\cdot \nabla\phi_r),
+\end{equation*}
+where $\delta$ denotes the Dirac delta distribution. For the purpose of the simulation, we only need the function values in the neighborhood of the discontinuity in prestress. Since $\delta$ is nonzero only where either $\phi_l$ or $\phi_r$ vanishes, we may, without loss of generality, consider a point where $\phi_l=0$. In this case, one summand vanishes. Furthermore, within a sufficiently small neighborhood around this point, with the given setup $\phi_r$ will not change the sign of the argument of $H$ so
+\[
+H(-\phi_l\cdot\phi_r)=H(\phi_l).
+\]
+Since $\nabla \phi_l$ is normal to the curve $\phi_l$, the resulting forcing term is normal to the prestress discontinuity. To avoid dependence on the magnitude of $\nabla \phi_l$, we normalize and write
+\begin{equation*}
+    \nabla\sigma_p = \sigma_{\mathrm{add}}\, \delta(\phi_l)\, \frac{\nabla \phi_l}{|\nabla \phi_l|}
+\end{equation*}
+for the forcing term on the left boundary of the left electrode, and analogously for all other regions with additional prestress.\\
+This is implemented in code via the function \texttt{force\_CF}. To verify correctness, the coefficient function is visualized in \texttt{demo.ipynb}.\\
+
+In FEM, such forcing terms are incorporated as interface terms when the mesh resolves $\partial E$. Since stress boundary conditions are Neumann conditions for elasticity, the force term can be included as prescribed stress along element boundaries that coincide with prestress jumps. The implementation is
+\begin{minted}{python}
+f = LinearForm(force_l*v*ds("left_inner") - force_l*v*ds("left_outer") + [...])
+\end{minted}
+where \texttt{"left\_inner"} denotes the inner boundary of the left electrode, etc.\\
+
+Solving $-\nabla\cdot\fatsig_\fatu(\fateps(\fatu)) = \mathbf{f}$ using FEM yields the displacement field $\fatu$. From this, the total stress $\fatsig = \fatsig_\fatu + \fatsig_p$ can be computed and subsequently used as input for the wave equation.
+
+
+
+
+\subsection{Wave PDE}
+\label{sec:wave_pde}
+After computing the stress field on the membrane, we now seek its eigenfrequencies. Due to the dominance of in-plane stress, as shown in section \ref{sec:bending_stiffness}, the bending stiffness can be neglected, and only the in-plane forces due to prestress need to be considered. This yields the PDE
+\begin{equation}
+    \nabla \cdot \left( \fatsig(x,y) \cdot \nabla u \right) 
+    = \rho \, \frac{\partial^2 u(x,y,t)}{\partial t^2},
+    \label{eq:basic_wave}
+\end{equation}
+where $\fatsig$ is the (generally anisotropic) stress tensor, $\rho$ the mass density, and $u:\mathbb{R}^2\times \mathbb{R} \to \mathbb{R}$ the transverse displacement of the membrane. Equation \eqref{eq:basic_wave} is the two-dimensional wave equation with variable coefficients.\\
+
+For completeness, an intuitive derivation is given in Appendix \ref{sec:derivation_wave}.\\
+
+Since we are interested in the eigenfrequencies, we consider the ansatz
+\[
+u(x,y,t) = u_0(x,y)\cos(\omega t),
+\]
+with $\omega \in \mathbb{R}$ which can be interpreted as the angular frequency of the membrane.\\
+Inserting into equation \eqref{eq:basic_wave} gives the time-harmonic eigenvalue problem
+\begin{equation*}
+    -\nabla \cdot \left( \fatsig \cdot \nabla u_0 \right)
+    = \rho \, \omega^2 \, u_0.
+\end{equation*}
+
+Multiplying by a test function $v$ and integrating over $\Omega$ yields
+\begin{equation*}
+    -\int_\Omega \bigl(\nabla \cdot (\fatsig \cdot \nabla u_0)\bigr)\, v \, dA
+    = \int_\Omega \rho \, \omega^2 u_0 v \, dA.
+\end{equation*}
+Applying the product rule,
+\[
+\nabla \cdot \bigl((\fatsig \cdot \nabla u_0)\, v \bigr) 
+= \bigl(\nabla \cdot (\fatsig \cdot \nabla u_0)\bigr)\, v 
++ (\fatsig \cdot \nabla u_0)\cdot \nabla v,
+\]
+and the divergence theorem gives
+\begin{equation*}
+    \int_\Omega \bigl(\nabla \cdot (\fatsig \cdot \nabla u_0)\bigr)\, v \, dA
+    = \int_{\partial \Omega} (\fatsig \cdot \nabla u_0)\, v \cdot \mathbf{n}\, dS
+    - \int_\Omega (\fatsig \cdot \nabla u_0)\cdot \nabla v \, dA.
+\end{equation*}
+
+With clamped boundary conditions $v=0$ on $\partial \Omega$, the boundary term vanishes, leaving the weak formulation
+\begin{equation}
+    \int_\Omega (\fatsig \cdot \nabla u_0)\cdot \nabla v \, dA
+    = \omega^2 \int_\Omega \rho \, u_0 v \, dA.
+\end{equation}
+
+The corresponding bilinear forms are
+\begin{align}
+    a(u,v) &= \int_\Omega (\fatsig \cdot \nabla u)\cdot \nabla v \, dA, \\
+    m(u,v) &= \int_\Omega \rho \, u v \, dA.
+\end{align}
+Both are symmetric, so the stiffness and mass matrix $\fatA$ and $\fatM$ are symmetric. For $m$ this is trivial. For $a$ consider any matrix $M\in \mathbb{R}^{N\times N}$ and vectors $u,v\in $. We have $$(M\cdot u)\cdot v=\sum_{i,j}M_{ji}u_iv_j\,\,\, and\,\,\, (M\cdot v)\cdot u=\sum_{i,j}M_{ij}u_iv_j$$ which is equal iff $M_{ij}=M_{ji}$ and since $\fatsig$ is symmetric this is fulfilled therefore $a$ is symmetric.\\ 
+The resulting algebraic problem is the generalized eigenvalue problem
+\[
+\fatA \fatu = \omega^2 \fatM \fatu,
+\]
+or equivalently $\fatM^{-1}\fatA \fatu = \omega^2 \fatu$, as discussed in section \ref{sec:eigenvalue_problems}.\\
+
+The implementation in code is:
+\begin{minted}{python}
+a += SymbolicBFI(InnerProduct((gfstress * grad(u)), grad(v)))
+m += SymbolicBFI(rhofct * u * v)
+\end{minted}
+
+Solving this eigenvalue problem with FEM yields the mode shape functions $u$ and the corresponding angular frequencies $\omega$ for the first $N$ eigenmodes. These are the quantities of interest, which can then be compared to experimental data.
+
+\newpage

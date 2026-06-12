@@ -1,0 +1,54 @@
+
+\usepackage{fontspec} 
+\usepackage{graphicx} 
+\usepackage{amsmath, amssymb, amsthm} 
+\usepackage{bbm}
+
+\usepackage[hidelinks]{hyperref} 
+\usepackage{setspace} 
+\usepackage{fancyhdr} 
+\usepackage{titlesec}
+\usepackage{appendix}
+\usepackage{tikz}
+\usetikzlibrary{angles,quotes} 
+\usepackage{siunitx} 
+\sisetup{separate-uncertainty = true}
+\usepackage{subcaption}
+\usepackage[percent]{overpic}
+\usepackage{xcolor}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage{lipsum}
+\usepackage{minted}
+\usepackage{comment}
+\usepackage{bm}
+
+
+\usepackage{tocloft}
+\setlength{\cftbeforetoctitleskip}{-1em}  
+
+\usepackage{acronym}
+
+\setlength{\cftbeforechapskip}{10pt}
+\setlength{\cftbeforesecskip}{5pt} 
+\setlength{\cftbeforesubsecskip}{3pt} 
+
+\usepackage[
+  backend=biber,
+  style=ieee,
+  citestyle=numeric-comp
+]{biblatex}
+\addbibresource{content/bibliography.bib} 
+\DeclareFieldFormat
+  [article,inbook,incollection,inproceedings,patent,thesis,unpublished]
+  {title}{\mkbibemph{#1}}
+  
+\usepackage{graphicx}
+\graphicspath{{../figures/}}
+
+\setmainfont{STIX Two Text}
+\setsansfont{STIX Two Text} 
+\setmonofont{STIX Two Math}
+
+% 4) Set the math font
+%\setmathfont{STIX Two Math}
