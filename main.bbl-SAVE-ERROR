@@ -1,0 +1,819 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.3 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{none/global//global/global/global}
+    \entry{Luhmann23}{article}{}{}
+      \name{author}{4}{}{%
+        {{hash=c8b72fb67fc916725baec30956b60d9d}{%
+           family={Luhmann},
+           familyi={L\bibinitperiod},
+           given={Niklas},
+           giveni={N\bibinitperiod}}}%
+        {{hash=b8ab7f8ec03518ac9a2ba69bdce351bf}{%
+           family={West},
+           familyi={W\bibinitperiod},
+           given={Robert\bibnamedelima G.},
+           giveni={R\bibinitperiod\bibinitdelim G\bibinitperiod}}}%
+        {{hash=78e95afebd17a8ead827161fb9a127cc}{%
+           family={Lafleur},
+           familyi={L\bibinitperiod},
+           given={Josiane\bibnamedelima P.},
+           giveni={J\bibinitperiod\bibinitdelim P\bibinitperiod}}}%
+        {{hash=22dd25ba755aaa2745e129d693825611}{%
+           family={Schmid},
+           familyi={S\bibinitperiod},
+           given={Silvan},
+           giveni={S\bibinitperiod}}}%
+      }
+      \strng{namehash}{a9e82be97d74c507d0f430a89489649b}
+      \strng{fullhash}{98f608f3ef4c19afe2989161a4296d2a}
+      \strng{fullhashraw}{98f608f3ef4c19afe2989161a4296d2a}
+      \strng{bibnamehash}{98f608f3ef4c19afe2989161a4296d2a}
+      \strng{authorbibnamehash}{98f608f3ef4c19afe2989161a4296d2a}
+      \strng{authornamehash}{a9e82be97d74c507d0f430a89489649b}
+      \strng{authorfullhash}{98f608f3ef4c19afe2989161a4296d2a}
+      \strng{authorfullhashraw}{98f608f3ef4c19afe2989161a4296d2a}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{ACS Sensors}
+      \field{note}{PMID: 37067504}
+      \field{number}{4}
+      \field{title}{Nanoelectromechanical Infrared Spectroscopy with In Situ Separation by Thermal Desorption: NEMS-IR-TD}
+      \field{volume}{8}
+      \field{year}{2023}
+      \field{pages}{1462\bibrangedash 1470}
+      \range{pages}{9}
+      \verb{doi}
+      \verb 10.1021/acssensors.2c02435
+      \endverb
+    \endentry
+    \entry{timaracpopovic25}{misc}{}{}
+      \name{author}{8}{}{%
+        {{hash=9ac043a0b5a437cb1b9ea2d7e0a99f58}{%
+           family={Timarac-Popović},
+           familyi={T\bibinithyphendelim P\bibinitperiod},
+           given={Jelena},
+           giveni={J\bibinitperiod}}}%
+        {{hash=73c4c429fa64fb38f203550a4fbea3c5}{%
+           family={Hiesberger},
+           familyi={H\bibinitperiod},
+           given={Johannes},
+           giveni={J\bibinitperiod}}}%
+        {{hash=d816ade22f75d78455373bd887af1319}{%
+           family={Šesto},
+           familyi={Š\bibinitperiod},
+           given={Eldira},
+           giveni={E\bibinitperiod}}}%
+        {{hash=c8b72fb67fc916725baec30956b60d9d}{%
+           family={Luhmann},
+           familyi={L\bibinitperiod},
+           given={Niklas},
+           giveni={N\bibinitperiod}}}%
+        {{hash=0c16211f2c01a14f0360740ab4db9ba2}{%
+           family={Giesriegl},
+           familyi={G\bibinitperiod},
+           given={Ariane},
+           giveni={A\bibinitperiod}}}%
+        {{hash=80eefb3c9cd389d3081c6a118edb7851}{%
+           family={Bešić},
+           familyi={B\bibinitperiod},
+           given={Hajrudin},
+           giveni={H\bibinitperiod}}}%
+        {{hash=78e95afebd17a8ead827161fb9a127cc}{%
+           family={Lafleur},
+           familyi={L\bibinitperiod},
+           given={Josiane\bibnamedelima P.},
+           giveni={J\bibinitperiod\bibinitdelim P\bibinitperiod}}}%
+        {{hash=22dd25ba755aaa2745e129d693825611}{%
+           family={Schmid},
+           familyi={S\bibinitperiod},
+           given={Silvan},
+           giveni={S\bibinitperiod}}}%
+      }
+      \strng{namehash}{ea08a1000e8c61e7867c30ba5897088f}
+      \strng{fullhash}{72a5831894204957c5405f55e207a75f}
+      \strng{fullhashraw}{72a5831894204957c5405f55e207a75f}
+      \strng{bibnamehash}{ea08a1000e8c61e7867c30ba5897088f}
+      \strng{authorbibnamehash}{ea08a1000e8c61e7867c30ba5897088f}
+      \strng{authornamehash}{ea08a1000e8c61e7867c30ba5897088f}
+      \strng{authorfullhash}{72a5831894204957c5405f55e207a75f}
+      \strng{authorfullhashraw}{72a5831894204957c5405f55e207a75f}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{eprintclass}{physics.ins-det}
+      \field{eprinttype}{arXiv}
+      \field{title}{Nanoplastic Analysis with Nanoelectromechanical System Fourier Transform Infrared Spectroscopy: NEMS-FTIR}
+      \field{year}{2025}
+      \verb{eprint}
+      \verb 2504.10192
+      \endverb
+      \verb{urlraw}
+      \verb https://arxiv.org/abs/2504.10192
+      \endverb
+      \verb{url}
+      \verb https://arxiv.org/abs/2504.10192
+      \endverb
+    \endentry
+    \entry{Hanay2012SingleproteinNM}{article}{}{}
+      \name{author}{9}{}{%
+        {{hash=21f5f6d00f366b0c011daacea7115123}{%
+           family={Hanay},
+           familyi={H\bibinitperiod},
+           given={Mehmet\bibnamedelima Selim},
+           giveni={M\bibinitperiod\bibinitdelim S\bibinitperiod}}}%
+        {{hash=2c98c5a9f45da9f0b2540d3f91909b93}{%
+           family={Kelber},
+           familyi={K\bibinitperiod},
+           given={Scott\bibnamedelima I.},
+           giveni={S\bibinitperiod\bibinitdelim I\bibinitperiod}}}%
+        {{hash=a885babdb0a75a6abba07eda6dfa79fb}{%
+           family={Naik},
+           familyi={N\bibinitperiod},
+           given={A.\bibnamedelimi K.},
+           giveni={A\bibinitperiod\bibinitdelim K\bibinitperiod}}}%
+        {{hash=13802e5c15a0b3c0980c65744731945e}{%
+           family={Chi},
+           familyi={C\bibinitperiod},
+           given={D.},
+           giveni={D\bibinitperiod}}}%
+        {{hash=87a406f73bd7333fdfd8eb3c66e6ccd8}{%
+           family={Hentz},
+           familyi={H\bibinitperiod},
+           given={Sébastien},
+           giveni={S\bibinitperiod}}}%
+        {{hash=f3fd7b49524ccf60c1fb16ee5fc51431}{%
+           family={Bullard},
+           familyi={B\bibinitperiod},
+           given={Elizabeth\bibnamedelima Caryn},
+           giveni={E\bibinitperiod\bibinitdelim C\bibinitperiod}}}%
+        {{hash=5aa934f78431c342a2c568e62a6e618c}{%
+           family={Colinet},
+           familyi={C\bibinitperiod},
+           given={Éric},
+           giveni={É\bibinitperiod}}}%
+        {{hash=730a14e669f5ef2c4877ced0e7b4b065}{%
+           family={Duraffourg},
+           familyi={D\bibinitperiod},
+           given={Laurent},
+           giveni={L\bibinitperiod}}}%
+        {{hash=1945d4c786b9f1f92f40e7d69b5bd295}{%
+           family={Roukes},
+           familyi={R\bibinitperiod},
+           given={Michael\bibnamedelima Lee},
+           giveni={M\bibinitperiod\bibinitdelim L\bibinitperiod}}}%
+      }
+      \strng{namehash}{c26300fa2faad4413a3c13e655ae7904}
+      \strng{fullhash}{807e00e18c370bcf753b1ad1b995c1e5}
+      \strng{fullhashraw}{807e00e18c370bcf753b1ad1b995c1e5}
+      \strng{bibnamehash}{c26300fa2faad4413a3c13e655ae7904}
+      \strng{authorbibnamehash}{c26300fa2faad4413a3c13e655ae7904}
+      \strng{authornamehash}{c26300fa2faad4413a3c13e655ae7904}
+      \strng{authorfullhash}{807e00e18c370bcf753b1ad1b995c1e5}
+      \strng{authorfullhashraw}{807e00e18c370bcf753b1ad1b995c1e5}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Nature nanotechnology}
+      \field{title}{Single-protein nanomechanical mass spectrometry in real time}
+      \field{volume}{7}
+      \field{year}{2012}
+      \field{pages}{602\bibrangedash 608}
+      \range{pages}{7}
+      \verb{urlraw}
+      \verb https://api.semanticscholar.org/CorpusID:14121739
+      \endverb
+      \verb{url}
+      \verb https://api.semanticscholar.org/CorpusID:14121739
+      \endverb
+    \endentry
+    \entry{NGSolve}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=d8560469228426d9f214496552b9108a}{%
+           family={NGSolve},
+           familyi={N\bibinitperiod}}}%
+      }
+      \strng{namehash}{d8560469228426d9f214496552b9108a}
+      \strng{fullhash}{d8560469228426d9f214496552b9108a}
+      \strng{fullhashraw}{d8560469228426d9f214496552b9108a}
+      \strng{bibnamehash}{d8560469228426d9f214496552b9108a}
+      \strng{authorbibnamehash}{d8560469228426d9f214496552b9108a}
+      \strng{authornamehash}{d8560469228426d9f214496552b9108a}
+      \strng{authorfullhash}{d8560469228426d9f214496552b9108a}
+      \strng{authorfullhashraw}{d8560469228426d9f214496552b9108a}
+      \field{extraname}{1}
+      \field{sortinit}{9}
+      \field{sortinithash}{0a5ebc79d83c96b6579069544c73c7d4}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{NGSolve Main Page}
+      \field{urlday}{4}
+      \field{urlmonth}{4}
+      \field{urlyear}{2025}
+      \field{year}{2025}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://ngsolve.org
+      \endverb
+      \verb{url}
+      \verb https://ngsolve.org
+      \endverb
+    \endentry
+    \entry{Braess_2007}{book}{}{}
+      \name{author}{1}{}{%
+        {{hash=b9e1a759b45ca11808d2dcc9f19ea074}{%
+           family={Braess},
+           familyi={B\bibinitperiod},
+           given={Dietrich},
+           giveni={D\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Cambridge University Press}%
+      }
+      \strng{namehash}{b9e1a759b45ca11808d2dcc9f19ea074}
+      \strng{fullhash}{b9e1a759b45ca11808d2dcc9f19ea074}
+      \strng{fullhashraw}{b9e1a759b45ca11808d2dcc9f19ea074}
+      \strng{bibnamehash}{b9e1a759b45ca11808d2dcc9f19ea074}
+      \strng{authorbibnamehash}{b9e1a759b45ca11808d2dcc9f19ea074}
+      \strng{authornamehash}{b9e1a759b45ca11808d2dcc9f19ea074}
+      \strng{authorfullhash}{b9e1a759b45ca11808d2dcc9f19ea074}
+      \strng{authorfullhashraw}{b9e1a759b45ca11808d2dcc9f19ea074}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{edition}{3}
+      \field{title}{Finite Elements: Theory, Fast Solvers, and Applications in Solid Mechanics}
+      \field{year}{2007}
+    \endentry
+    \entry{Faustmann22}{misc}{}{}
+      \name{author}{2}{}{%
+        {{hash=e1251f04b044b416df6936e8111f8a7c}{%
+           family={Faustmann},
+           familyi={F\bibinitperiod},
+           given={Markus},
+           giveni={M\bibinitperiod}}}%
+        {{hash=c2f0ceed33d725d9a663538e3f17eb19}{%
+           family={Schöberl},
+           familyi={S\bibinitperiod},
+           given={Joachim},
+           giveni={J\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {TU Wien}%
+      }
+      \strng{namehash}{1f8326efe88d03ab432de692a650515f}
+      \strng{fullhash}{1f8326efe88d03ab432de692a650515f}
+      \strng{fullhashraw}{1f8326efe88d03ab432de692a650515f}
+      \strng{bibnamehash}{1f8326efe88d03ab432de692a650515f}
+      \strng{authorbibnamehash}{1f8326efe88d03ab432de692a650515f}
+      \strng{authornamehash}{1f8326efe88d03ab432de692a650515f}
+      \strng{authorfullhash}{1f8326efe88d03ab432de692a650515f}
+      \strng{authorfullhashraw}{1f8326efe88d03ab432de692a650515f}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Numerics of PDEs (lecture notes)}
+      \field{year}{2022}
+    \endentry
+    \entry{KNYAZEV+NEYMEYR}{article}{}{}
+      \name{author}{2}{}{%
+        {{hash=5fac18251e79c045afb344c3cacbd966}{%
+           family={Knyazev},
+           familyi={K\bibinitperiod},
+           given={Andrew\bibnamedelima V.},
+           giveni={A\bibinitperiod\bibinitdelim V\bibinitperiod}}}%
+        {{hash=695c529d7fa222277e8dfe4003dae305}{%
+           family={Neymeyr},
+           familyi={N\bibinitperiod},
+           given={Klaus},
+           giveni={K\bibinitperiod}}}%
+      }
+      \strng{namehash}{0900ef1f77bfcef9ae880b66cfde716f}
+      \strng{fullhash}{0900ef1f77bfcef9ae880b66cfde716f}
+      \strng{fullhashraw}{0900ef1f77bfcef9ae880b66cfde716f}
+      \strng{bibnamehash}{0900ef1f77bfcef9ae880b66cfde716f}
+      \strng{authorbibnamehash}{0900ef1f77bfcef9ae880b66cfde716f}
+      \strng{authornamehash}{0900ef1f77bfcef9ae880b66cfde716f}
+      \strng{authorfullhash}{0900ef1f77bfcef9ae880b66cfde716f}
+      \strng{authorfullhashraw}{0900ef1f77bfcef9ae880b66cfde716f}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{0024-3795}
+      \field{journaltitle}{Linear Algebra and its Applications}
+      \field{number}{1}
+      \field{title}{A geometric theory for preconditioned inverse iteration III: A short and sharp convergence estimate for generalized eigenvalue problems}
+      \field{volume}{358}
+      \field{year}{2003}
+      \field{pages}{95\bibrangedash 114}
+      \range{pages}{20}
+      \verb{doi}
+      \verb https://doi.org/10.1016/S0024-3795(01)00461-X
+      \endverb
+      \verb{urlraw}
+      \verb https://www.sciencedirect.com/science/article/pii/S002437950100461X
+      \endverb
+      \verb{url}
+      \verb https://www.sciencedirect.com/science/article/pii/S002437950100461X
+      \endverb
+      \keyw{Symmetric generalized eigenvalue problem,Preconditioning,Preconditioned eigensolver,Gradient,Steepest descent,Conjugate gradient,Matrix-free,Rayleigh,Ritz,Davidson,Eigenvector,Iterative method}
+    \endentry
+    \entry{NGSolveEig}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=d8560469228426d9f214496552b9108a}{%
+           family={NGSolve},
+           familyi={N\bibinitperiod}}}%
+      }
+      \strng{namehash}{d8560469228426d9f214496552b9108a}
+      \strng{fullhash}{d8560469228426d9f214496552b9108a}
+      \strng{fullhashraw}{d8560469228426d9f214496552b9108a}
+      \strng{bibnamehash}{d8560469228426d9f214496552b9108a}
+      \strng{authorbibnamehash}{d8560469228426d9f214496552b9108a}
+      \strng{authornamehash}{d8560469228426d9f214496552b9108a}
+      \strng{authorfullhash}{d8560469228426d9f214496552b9108a}
+      \strng{authorfullhashraw}{d8560469228426d9f214496552b9108a}
+      \field{extraname}{2}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Eigenvalue problems}
+      \field{urlday}{4}
+      \field{urlmonth}{4}
+      \field{urlyear}{2025}
+      \field{year}{2025}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://docu.ngsolve.org/v6.2.1810/i-tutorials/unit-2.2-eigenvalues/pinvit.html
+      \endverb
+      \verb{url}
+      \verb https://docu.ngsolve.org/v6.2.1810/i-tutorials/unit-2.2-eigenvalues/pinvit.html
+      \endverb
+    \endentry
+    \entry{Melenk21}{misc}{}{}
+      \name{author}{1}{}{%
+        {{hash=348aff99689480df3f2e681fb99ff126}{%
+           family={Melenk},
+           familyi={M\bibinitperiod},
+           given={Jens},
+           giveni={J\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {TU Wien}%
+      }
+      \strng{namehash}{348aff99689480df3f2e681fb99ff126}
+      \strng{fullhash}{348aff99689480df3f2e681fb99ff126}
+      \strng{fullhashraw}{348aff99689480df3f2e681fb99ff126}
+      \strng{bibnamehash}{348aff99689480df3f2e681fb99ff126}
+      \strng{authorbibnamehash}{348aff99689480df3f2e681fb99ff126}
+      \strng{authornamehash}{348aff99689480df3f2e681fb99ff126}
+      \strng{authorfullhash}{348aff99689480df3f2e681fb99ff126}
+      \strng{authorfullhashraw}{348aff99689480df3f2e681fb99ff126}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{class notes numerical computation}
+      \field{year}{2021}
+    \endentry
+    \entry{Faustmann+Melenk24}{misc}{}{}
+      \name{author}{2}{}{%
+        {{hash=348aff99689480df3f2e681fb99ff126}{%
+           family={Melenk},
+           familyi={M\bibinitperiod},
+           given={Jens},
+           giveni={J\bibinitperiod}}}%
+        {{hash=e1251f04b044b416df6936e8111f8a7c}{%
+           family={Faustmann},
+           familyi={F\bibinitperiod},
+           given={Markus},
+           giveni={M\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {TU Wien}%
+      }
+      \strng{namehash}{548a24d1ef00559240c3b56913135d8f}
+      \strng{fullhash}{548a24d1ef00559240c3b56913135d8f}
+      \strng{fullhashraw}{548a24d1ef00559240c3b56913135d8f}
+      \strng{bibnamehash}{548a24d1ef00559240c3b56913135d8f}
+      \strng{authorbibnamehash}{548a24d1ef00559240c3b56913135d8f}
+      \strng{authornamehash}{548a24d1ef00559240c3b56913135d8f}
+      \strng{authorfullhash}{548a24d1ef00559240c3b56913135d8f}
+      \strng{authorfullhashraw}{548a24d1ef00559240c3b56913135d8f}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Numerics of partial differential equations: instationary problems (lecture notes)}
+      \field{year}{2024}
+    \endentry
+    \entry{NGSolveMG}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=d8560469228426d9f214496552b9108a}{%
+           family={NGSolve},
+           familyi={N\bibinitperiod}}}%
+      }
+      \strng{namehash}{d8560469228426d9f214496552b9108a}
+      \strng{fullhash}{d8560469228426d9f214496552b9108a}
+      \strng{fullhashraw}{d8560469228426d9f214496552b9108a}
+      \strng{bibnamehash}{d8560469228426d9f214496552b9108a}
+      \strng{authorbibnamehash}{d8560469228426d9f214496552b9108a}
+      \strng{authornamehash}{d8560469228426d9f214496552b9108a}
+      \strng{authorfullhash}{d8560469228426d9f214496552b9108a}
+      \strng{authorfullhashraw}{d8560469228426d9f214496552b9108a}
+      \field{extraname}{3}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{2.1.3 Multigrid and Multilevel Methods}
+      \field{urlday}{14}
+      \field{urlmonth}{5}
+      \field{urlyear}{2026}
+      \field{year}{2026}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://docu.ngsolve.org/latest/i-tutorials/unit-2.1.3-multigrid/multigrid.html
+      \endverb
+      \verb{url}
+      \verb https://docu.ngsolve.org/latest/i-tutorials/unit-2.1.3-multigrid/multigrid.html
+      \endverb
+    \endentry
+    \entry{Neymeyr02}{article}{}{}
+      \name{author}{1}{}{%
+        {{hash=695c529d7fa222277e8dfe4003dae305}{%
+           family={Neymeyr},
+           familyi={N\bibinitperiod},
+           given={Klaus},
+           giveni={K\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {American Mathematical Society}%
+      }
+      \strng{namehash}{695c529d7fa222277e8dfe4003dae305}
+      \strng{fullhash}{695c529d7fa222277e8dfe4003dae305}
+      \strng{fullhashraw}{695c529d7fa222277e8dfe4003dae305}
+      \strng{bibnamehash}{695c529d7fa222277e8dfe4003dae305}
+      \strng{authorbibnamehash}{695c529d7fa222277e8dfe4003dae305}
+      \strng{authornamehash}{695c529d7fa222277e8dfe4003dae305}
+      \strng{authorfullhash}{695c529d7fa222277e8dfe4003dae305}
+      \strng{authorfullhashraw}{695c529d7fa222277e8dfe4003dae305}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{The aim of this paper is to provide a convergence analysis for a preconditioned subspace iteration, which is designated to determine a modest number of the smallest eigenvalues and its corresponding invariant subspace of eigenvectors of a large, symmetric positive definite matrix. The algorithm is built upon a subspace implementation of preconditioned inverse iteration, i.e., the well-known inverse iteration procedure, where the associated system of linear equations is solved approximately by using a preconditioner. This step is followed by a Rayleigh-Ritz projection so that preconditioned inverse iteration is always applied to the Ritz vectors of the actual subspace of approximate eigenvectors. The given theory provides sharp convergence estimates for the Ritz values and is mainly built on arguments exploiting the geometry underlying preconditioned inverse iteration.}
+      \field{issn}{00255718, 10886842}
+      \field{journaltitle}{Mathematics of Computation}
+      \field{number}{237}
+      \field{title}{A Geometric Theory for Preconditioned Inverse Iteration Applied to a Subspace}
+      \field{urlday}{4}
+      \field{urlmonth}{4}
+      \field{urlyear}{2025}
+      \field{volume}{71}
+      \field{year}{2002}
+      \field{urldateera}{ce}
+      \field{pages}{197\bibrangedash 216}
+      \range{pages}{20}
+      \verb{urlraw}
+      \verb http://www.jstor.org/stable/2698867
+      \endverb
+      \verb{url}
+      \verb http://www.jstor.org/stable/2698867
+      \endverb
+    \endentry
+    \entry{fung2001classical}{book}{}{}
+      \name{author}{2}{}{%
+        {{hash=355ae54f9fc391f64e21c125ff752263}{%
+           family={Fung},
+           familyi={F\bibinitperiod},
+           given={Y.},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=a9bd1149abe9d309c37ec4ef9aca41e5}{%
+           family={Tong},
+           familyi={T\bibinitperiod},
+           given={P.},
+           giveni={P\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {World Scientific}%
+      }
+      \strng{namehash}{7416b0e5ddb0178bca85c2861812bc41}
+      \strng{fullhash}{7416b0e5ddb0178bca85c2861812bc41}
+      \strng{fullhashraw}{7416b0e5ddb0178bca85c2861812bc41}
+      \strng{bibnamehash}{7416b0e5ddb0178bca85c2861812bc41}
+      \strng{authorbibnamehash}{7416b0e5ddb0178bca85c2861812bc41}
+      \strng{authornamehash}{7416b0e5ddb0178bca85c2861812bc41}
+      \strng{authorfullhash}{7416b0e5ddb0178bca85c2861812bc41}
+      \strng{authorfullhashraw}{7416b0e5ddb0178bca85c2861812bc41}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{isbn}{9789810241247}
+      \field{series}{Advanced series in engineering science}
+      \field{title}{Classical and Computational Solid Mechanics}
+      \field{year}{2001}
+      \verb{urlraw}
+      \verb https://books.google.at/books?id=hmyiIiiv4FUC
+      \endverb
+      \verb{url}
+      \verb https://books.google.at/books?id=hmyiIiiv4FUC
+      \endverb
+    \endentry
+    \entry{IPerf}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=b8c23f051fa3b1681886ecd13ac06b2c}{%
+           family={Association},
+           familyi={A\bibinitperiod},
+           given={Industrial\bibnamedelima Perforators},
+           giveni={I\bibinitperiod\bibinitdelim P\bibinitperiod}}}%
+      }
+      \strng{namehash}{b8c23f051fa3b1681886ecd13ac06b2c}
+      \strng{fullhash}{b8c23f051fa3b1681886ecd13ac06b2c}
+      \strng{fullhashraw}{b8c23f051fa3b1681886ecd13ac06b2c}
+      \strng{bibnamehash}{b8c23f051fa3b1681886ecd13ac06b2c}
+      \strng{authorbibnamehash}{b8c23f051fa3b1681886ecd13ac06b2c}
+      \strng{authornamehash}{b8c23f051fa3b1681886ecd13ac06b2c}
+      \strng{authorfullhash}{b8c23f051fa3b1681886ecd13ac06b2c}
+      \strng{authorfullhashraw}{b8c23f051fa3b1681886ecd13ac06b2c}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Elastic Properties of Perforated Metals}
+      \field{urlday}{4}
+      \field{urlmonth}{4}
+      \field{urlyear}{2025}
+      \field{year}{2025}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://www.iperf.org/perforating/knowledge-center/perf-handbook/elastic-properties-perforated-metals/
+      \endverb
+      \verb{url}
+      \verb https://www.iperf.org/perforating/knowledge-center/perf-handbook/elastic-properties-perforated-metals/
+      \endverb
+    \endentry
+    \entry{schmid2016fundamentals}{book}{}{}
+      \name{author}{3}{}{%
+        {{hash=3b20a4c906feea883921e460a305ccd0}{%
+           family={Schmid},
+           familyi={S\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod}}}%
+        {{hash=4ffc0101d72c738def4a6727751eb69b}{%
+           family={Villanueva},
+           familyi={V\bibinitperiod},
+           given={L.G.},
+           giveni={L\bibinitperiod}}}%
+        {{hash=be4109c7fe321cb2171d26b21111a29e}{%
+           family={Roukes},
+           familyi={R\bibinitperiod},
+           given={M.L.},
+           giveni={M\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Springer International Publishing}%
+      }
+      \strng{namehash}{952ece5f98018312c385c3f243e49e54}
+      \strng{fullhash}{30d7290ead6ebcdbeaae998648fc1596}
+      \strng{fullhashraw}{30d7290ead6ebcdbeaae998648fc1596}
+      \strng{bibnamehash}{30d7290ead6ebcdbeaae998648fc1596}
+      \strng{authorbibnamehash}{30d7290ead6ebcdbeaae998648fc1596}
+      \strng{authornamehash}{952ece5f98018312c385c3f243e49e54}
+      \strng{authorfullhash}{30d7290ead6ebcdbeaae998648fc1596}
+      \strng{authorfullhashraw}{30d7290ead6ebcdbeaae998648fc1596}
+      \field{extraname}{1}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{isbn}{9783319286914}
+      \field{title}{Fundamentals of Nanomechanical Resonators}
+      \field{year}{2016}
+      \verb{urlraw}
+      \verb https://books.google.at/books?id=quR6DAAAQBAJ
+      \endverb
+      \verb{url}
+      \verb https://books.google.at/books?id=quR6DAAAQBAJ
+      \endverb
+    \endentry
+    \entry{NGSolvePreconditioner}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=d8560469228426d9f214496552b9108a}{%
+           family={NGSolve},
+           familyi={N\bibinitperiod}}}%
+      }
+      \strng{namehash}{d8560469228426d9f214496552b9108a}
+      \strng{fullhash}{d8560469228426d9f214496552b9108a}
+      \strng{fullhashraw}{d8560469228426d9f214496552b9108a}
+      \strng{bibnamehash}{d8560469228426d9f214496552b9108a}
+      \strng{authorbibnamehash}{d8560469228426d9f214496552b9108a}
+      \strng{authornamehash}{d8560469228426d9f214496552b9108a}
+      \strng{authorfullhash}{d8560469228426d9f214496552b9108a}
+      \strng{authorfullhashraw}{d8560469228426d9f214496552b9108a}
+      \field{extraname}{4}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Preconditioners in NGSolve}
+      \field{urlday}{14}
+      \field{urlmonth}{5}
+      \field{urlyear}{2026}
+      \field{year}{2026}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://docu.ngsolve.org/nightly/i-tutorials/unit-2.1.1-preconditioners/preconditioner.html
+      \endverb
+      \verb{url}
+      \verb https://docu.ngsolve.org/nightly/i-tutorials/unit-2.1.1-preconditioners/preconditioner.html
+      \endverb
+    \endentry
+    \entry{Schmid13}{article}{}{}
+      \name{author}{4}{}{%
+        {{hash=22dd25ba755aaa2745e129d693825611}{%
+           family={Schmid},
+           familyi={S\bibinitperiod},
+           given={Silvan},
+           giveni={S\bibinitperiod}}}%
+        {{hash=d5c0913a462d2dbff33c8bb275ccd3fe}{%
+           family={Kurek},
+           familyi={K\bibinitperiod},
+           given={Maksymilian},
+           giveni={M\bibinitperiod}}}%
+        {{hash=22b5e237d2b488f26b2cecfa9ae390d5}{%
+           family={Adolphsen},
+           familyi={A\bibinitperiod},
+           given={Jens\bibnamedelima Q.},
+           giveni={J\bibinitperiod\bibinitdelim Q\bibinitperiod}}}%
+        {{hash=e87751ebefb39d591ef2cae28374a6c0}{%
+           family={Boisen},
+           familyi={B\bibinitperiod},
+           given={Anja},
+           giveni={A\bibinitperiod}}}%
+      }
+      \strng{namehash}{3fea8d2d9cb858919c32a226684feda2}
+      \strng{fullhash}{ca7fcb64ee75bb1bfa2129dbae9c277c}
+      \strng{fullhashraw}{ca7fcb64ee75bb1bfa2129dbae9c277c}
+      \strng{bibnamehash}{ca7fcb64ee75bb1bfa2129dbae9c277c}
+      \strng{authorbibnamehash}{ca7fcb64ee75bb1bfa2129dbae9c277c}
+      \strng{authornamehash}{3fea8d2d9cb858919c32a226684feda2}
+      \strng{authorfullhash}{ca7fcb64ee75bb1bfa2129dbae9c277c}
+      \strng{authorfullhashraw}{ca7fcb64ee75bb1bfa2129dbae9c277c}
+      \field{extraname}{2}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Scientific Reports}
+      \field{title}{Real-time single airborne nanoparticle detection with nanomechanical resonant filter-fiber}
+      \field{volume}{3}
+      \field{year}{2013}
+      \field{pages}{1288}
+      \range{pages}{1}
+      \verb{urlraw}
+      \verb http://hdl.handle.net/20.500.12708/158080
+      \endverb
+      \verb{url}
+      \verb http://hdl.handle.net/20.500.12708/158080
+      \endverb
+    \endentry
+    \entry{MAMPALLIL18}{article}{}{}
+      \name{author}{2}{}{%
+        {{hash=44061ab4daa49e85cd2b7aed1c198450}{%
+           family={Mampallil},
+           familyi={M\bibinitperiod},
+           given={Dileep},
+           giveni={D\bibinitperiod}}}%
+        {{hash=3417892e33579e4165e9da2616c08736}{%
+           family={Eral},
+           familyi={E\bibinitperiod},
+           given={Huseyin\bibnamedelima Burak},
+           giveni={H\bibinitperiod\bibinitdelim B\bibinitperiod}}}%
+      }
+      \strng{namehash}{b747e25450a59c66e1336da441ae8f0a}
+      \strng{fullhash}{b747e25450a59c66e1336da441ae8f0a}
+      \strng{fullhashraw}{b747e25450a59c66e1336da441ae8f0a}
+      \strng{bibnamehash}{b747e25450a59c66e1336da441ae8f0a}
+      \strng{authorbibnamehash}{b747e25450a59c66e1336da441ae8f0a}
+      \strng{authornamehash}{b747e25450a59c66e1336da441ae8f0a}
+      \strng{authorfullhash}{b747e25450a59c66e1336da441ae8f0a}
+      \strng{authorfullhashraw}{b747e25450a59c66e1336da441ae8f0a}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{0001-8686}
+      \field{journaltitle}{Advances in Colloid and Interface Science}
+      \field{title}{A review on suppression and utilization of the coffee-ring effect}
+      \field{volume}{252}
+      \field{year}{2018}
+      \field{pages}{38\bibrangedash 54}
+      \range{pages}{17}
+      \verb{doi}
+      \verb https://doi.org/10.1016/j.cis.2017.12.008
+      \endverb
+      \verb{urlraw}
+      \verb https://www.sciencedirect.com/science/article/pii/S0001868617303664
+      \endverb
+      \verb{url}
+      \verb https://www.sciencedirect.com/science/article/pii/S0001868617303664
+      \endverb
+      \keyw{Coffee-ring effect,Evaporation,Droplets,Capillarity,Colloids}
+    \endentry
+    \entry{Norcada}{online}{}{}
+      \name{author}{1}{}{%
+        {{hash=4007f90c6c42bd4463e3825333f00019}{%
+           family={Norcada},
+           familyi={N\bibinitperiod}}}%
+      }
+      \strng{namehash}{4007f90c6c42bd4463e3825333f00019}
+      \strng{fullhash}{4007f90c6c42bd4463e3825333f00019}
+      \strng{fullhashraw}{4007f90c6c42bd4463e3825333f00019}
+      \strng{bibnamehash}{4007f90c6c42bd4463e3825333f00019}
+      \strng{authorbibnamehash}{4007f90c6c42bd4463e3825333f00019}
+      \strng{authornamehash}{4007f90c6c42bd4463e3825333f00019}
+      \strng{authorfullhash}{4007f90c6c42bd4463e3825333f00019}
+      \strng{authorfullhashraw}{4007f90c6c42bd4463e3825333f00019}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Norcada website}
+      \field{urlday}{11}
+      \field{urlmonth}{6}
+      \field{urlyear}{2026}
+      \field{year}{2026}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://www.norcada.com/
+      \endverb
+      \verb{url}
+      \verb https://www.norcada.com/
+      \endverb
+    \endentry
+    \entry{ClelandAndrewN2003Fon:}{book}{}{}
+      \name{author}{1}{}{%
+        {{hash=1614de2d4794b95eddeaf9af4abf59b2}{%
+           family={Cleland},
+           familyi={C\bibinitperiod},
+           given={Andrew\bibnamedelima N},
+           giveni={A\bibinitperiod\bibinitdelim N\bibinitperiod}}}%
+      }
+      \list{language}{1}{%
+        {eng}%
+      }
+      \list{location}{1}{%
+        {Berlin [u.a.]}%
+      }
+      \list{publisher}{1}{%
+        {Springer}%
+      }
+      \strng{namehash}{1614de2d4794b95eddeaf9af4abf59b2}
+      \strng{fullhash}{1614de2d4794b95eddeaf9af4abf59b2}
+      \strng{fullhashraw}{1614de2d4794b95eddeaf9af4abf59b2}
+      \strng{bibnamehash}{1614de2d4794b95eddeaf9af4abf59b2}
+      \strng{authorbibnamehash}{1614de2d4794b95eddeaf9af4abf59b2}
+      \strng{authornamehash}{1614de2d4794b95eddeaf9af4abf59b2}
+      \strng{authorfullhash}{1614de2d4794b95eddeaf9af4abf59b2}
+      \strng{authorfullhashraw}{1614de2d4794b95eddeaf9af4abf59b2}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Foundations of nanomechanics : from solid-state theory to device applications}
+      \field{isbn}{3540436618}
+      \field{series}{Advanced texts in physics}
+      \field{title}{Foundations of nanomechanics : from solid-state theory to device applications}
+      \field{year}{2003}
+      \keyw{Nanotechnologie}
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+

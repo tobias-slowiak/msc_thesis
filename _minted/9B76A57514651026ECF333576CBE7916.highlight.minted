@@ -1,0 +1,40 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{k}{def}\PYG{+w}{ }\PYG{n+nf}{solve}\PYG{p}{(}\PYG{n}{p}\PYG{p}{,} \PYG{n}{freq\PYGZus{}to\PYGZus{}fit\PYGZus{}to}\PYG{o}{=}\PYG{k+kc}{None}\PYG{p}{,} \PYG{n}{mode\PYGZus{}to\PYGZus{}fit\PYGZus{}to}\PYG{o}{=}\PYG{k+kc}{None}\PYG{p}{,} \PYG{n}{ela}\PYG{p}{:} \PYG{n+nb}{bool} \PYG{o}{=} \PYG{k+kc}{True}\PYG{p}{,}
+          \PYG{n}{preconditioner}\PYG{p}{:} \PYG{n+nb}{str} \PYG{o}{=} \PYG{l+s+s2}{\PYGZdq{}multigrid\PYGZdq{}}\PYG{p}{):}
+\PYG{+w}{    }\PYG{l+s+sd}{\PYGZdq{}\PYGZdq{}\PYGZdq{}Solve full simulation loop: elasticity + wave problem.\PYGZdq{}\PYGZdq{}\PYGZdq{}}
+    \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}solving\PYGZdq{}}\PYG{p}{)}
+    \PYG{n}{mesh} \PYG{o}{=} \PYG{n}{generate\PYGZus{}mesh}\PYG{p}{(}\PYG{n}{p}\PYG{p}{)}
+    \PYG{n}{eigenvals} \PYG{o}{=} \PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{]} \PYG{o}{*} \PYG{n}{p}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}num\PYGZus{}modes\PYGZdq{}}\PYG{p}{]}
+    \PYG{n}{del\PYGZus{}f} \PYG{o}{=} \PYG{l+m+mi}{10} \PYG{o}{*} \PYG{n}{p}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}convcrit\PYGZdq{}}\PYG{p}{]}  \PYG{c+c1}{\PYGZsh{} initialize to enter first iteration}
+    \PYG{n}{freq\PYGZus{}fem} \PYG{o}{=} \PYG{l+m+mi}{0}
+
+    \PYG{k}{while} \PYG{n+nb}{abs}\PYG{p}{(}\PYG{n}{del\PYGZus{}f}\PYG{p}{)} \PYG{o}{\PYGZgt{}} \PYG{n}{p}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}convcrit\PYGZdq{}}\PYG{p}{]:}
+        \PYG{c+c1}{\PYGZsh{} elasticity}
+        \PYG{n}{gfuela} \PYG{o}{=} \PYG{n}{solve\PYGZus{}ela}\PYG{p}{(}\PYG{n}{p}\PYG{p}{,} \PYG{n}{mesh}\PYG{p}{)}
+        \PYG{k}{if} \PYG{n}{ela}\PYG{p}{:}
+            \PYG{n}{gfstress} \PYG{o}{=} \PYG{n}{stress\PYGZus{}field}\PYG{p}{(}\PYG{n}{p}\PYG{p}{,} \PYG{n}{gfuela}\PYG{p}{,} \PYG{n}{mesh}\PYG{p}{)}
+        \PYG{k}{else}\PYG{p}{:}
+            \PYG{n}{sigfct} \PYG{o}{=} \PYG{n}{generate\PYGZus{}sig\PYGZus{}fct}\PYG{p}{(}\PYG{n}{p}\PYG{p}{)}
+            \PYG{n}{fesstress} \PYG{o}{=} \PYG{n}{MatrixValued}\PYG{p}{(}\PYG{n}{L2}\PYG{p}{(}\PYG{n}{mesh}\PYG{p}{,} \PYG{n}{order}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{),} \PYG{n}{symmetric}\PYG{o}{=}\PYG{k+kc}{True}\PYG{p}{)}
+            \PYG{n}{prestress} \PYG{o}{=} \PYG{n}{GridFunction}\PYG{p}{(}\PYG{n}{fesstress}\PYG{p}{)}
+            \PYG{n}{prestress}\PYG{o}{.}\PYG{n}{Interpolate}\PYG{p}{(}\PYG{n}{sigfct}\PYG{p}{,} \PYG{n}{fesstress}\PYG{p}{)}
+            \PYG{n}{gfstress} \PYG{o}{=} \PYG{n}{prestress}
+        \PYG{c+c1}{\PYGZsh{} wave}
+        \PYG{n}{feswave}\PYG{p}{,} \PYG{n}{eigenvals}\PYG{p}{,} \PYG{n}{multigfuwave} \PYG{o}{=} \PYG{n}{solve\PYGZus{}wave}\PYG{p}{(}\PYG{n}{p}\PYG{p}{,} \PYG{n}{mesh}\PYG{p}{,} \PYG{n}{gfstress}\PYG{p}{,}
+                                                      \PYG{n}{preconditioner}\PYG{o}{=}\PYG{n}{preconditioner}\PYG{p}{)}
+        \PYG{k}{if} \PYG{o+ow}{not} \PYG{n}{eigenvals}\PYG{p}{:}
+            \PYG{k}{return} \PYG{k+kc}{None}\PYG{p}{,} \PYG{k+kc}{None}\PYG{p}{,} \PYG{k+kc}{None}
+        \PYG{k}{if} \PYG{n}{freq\PYGZus{}to\PYGZus{}fit\PYGZus{}to} \PYG{o+ow}{is} \PYG{k+kc}{None}\PYG{p}{:}
+            \PYG{n}{del\PYGZus{}f} \PYG{o}{=} \PYG{l+m+mi}{0}
+        \PYG{k}{else}\PYG{p}{:}
+            \PYG{n}{results} \PYG{o}{=} \PYG{n}{result\PYGZus{}dict}\PYG{p}{(}\PYG{n}{p}\PYG{p}{,} \PYG{n}{mesh}\PYG{p}{,} \PYG{n}{feswave}\PYG{p}{,} \PYG{n}{multigfuwave}\PYG{p}{,} \PYG{n}{eigenvals}\PYG{p}{,} \PYG{n}{include\PYGZus{}modeshape}\PYG{o}{=}\PYG{k+kc}{False}\PYG{p}{)}
+            \PYG{k}{if} \PYG{n}{mode\PYGZus{}to\PYGZus{}fit\PYGZus{}to} \PYG{o+ow}{in} \PYG{n}{results}\PYG{p}{:}
+                \PYG{n}{freq\PYGZus{}fem} \PYG{o}{=} \PYG{n}{results}\PYG{p}{[}\PYG{n}{mode\PYGZus{}to\PYGZus{}fit\PYGZus{}to}\PYG{p}{][}\PYG{l+m+mi}{0}\PYG{p}{]} \PYG{o}{*} \PYG{l+m+mf}{1e3}
+            \PYG{k}{else}\PYG{p}{:}
+                \PYG{k}{raise} \PYG{n+ne}{ValueError}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}Could not find mode\PYGZus{}to\PYGZus{}fit\PYGZus{}to\PYGZdq{}}\PYG{p}{)}
+            \PYG{n}{del\PYGZus{}f} \PYG{o}{=} \PYG{n}{freq\PYGZus{}to\PYGZus{}fit\PYGZus{}to} \PYG{o}{\PYGZhy{}} \PYG{n}{freq\PYGZus{}fem}
+            \PYG{n}{Pa\PYGZus{}per\PYGZus{}Hz} \PYG{o}{=} \PYG{l+m+mf}{1e3} \PYG{o}{*} \PYG{p}{(}\PYG{n}{p}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}Lside\PYGZdq{}}\PYG{p}{]} \PYG{o}{/} \PYG{l+m+mf}{1e\PYGZhy{}3}\PYG{p}{)}  \PYG{c+c1}{\PYGZsh{} empirical factor: 1 MPa \PYGZhy{}\PYGZgt{} 1 kHz per mm size}
+            \PYG{k}{if} \PYG{n+nb}{abs}\PYG{p}{(}\PYG{n}{del\PYGZus{}f}\PYG{p}{)} \PYG{o}{\PYGZgt{}} \PYG{n}{p}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}convcrit\PYGZdq{}}\PYG{p}{]:}
+                \PYG{n}{p}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}sigsin\PYGZdq{}}\PYG{p}{]} \PYG{o}{+=} \PYG{n}{del\PYGZus{}f} \PYG{o}{*} \PYG{n}{Pa\PYGZus{}per\PYGZus{}Hz}
+    \PYG{k}{return} \PYG{n}{feswave}\PYG{p}{,} \PYG{n}{eigenvals}\PYG{p}{,} \PYG{n}{multigfuwave}
+\end{MintedVerbatim}

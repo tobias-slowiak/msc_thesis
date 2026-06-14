@@ -4,11 +4,18 @@
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{lmodern}
+\usepackage{graphicx}
 \usepackage{siunitx}
 \usepackage{amsmath}
 \usepackage[hidelinks]{hyperref}
 
 \sisetup{separate-uncertainty=true}
+\graphicspath{{figures/pngs/}}
+
+\newcommand{\ngsolve}{%
+  \includegraphics[height=1.25\fontcharht\font`A]{ngsolvelogo.png}%
+  \,NGSolve%
+}
 
 \title{Speaker Script for the Master's Thesis Defense}
 \author{Tobias Slowiak}
@@ -17,29 +24,26 @@
 \begin{document}
 \maketitle
 
-\section*{Timing}
-
-The slide deck is designed for roughly 15 minutes. A good target is about one minute per content slide, with a little less time on the title and final slide and a little more time on the two result slides.
-
 \section*{Slide 1: Title}
 
-Good morning, and thank you for being here. In this presentation I will talk about my master's thesis, titled ``Mechanical FEM Simulation of Sampled Nanomembranes for Mass Detection''. The work was carried out at the Institute of Sensor and Actuator Systems at TU Wien.
+Hello, and thank you for being here. In this presentation I will talk about my master's thesis, titled ``Mechanical FEM Simulation of Sampled Nanomembranes for Mass Detection''. The work was carried out at the Institute of Sensor and Actuator Systems at TU Wien.
 
-The central idea of the thesis is to use a mechanical finite element model to understand how small deposited sample masses change the resonance frequencies of nanomechanical membranes, and to evaluate whether these frequency changes can be used for quantitative mass detection.
+The central idea of the thesis is to use a mechanical finite element model to understand how small deposited sample masses change the resonance frequencies of nanomechanical membranes.
 
 \section*{Slide 2: Why nanomechanical membranes?}
 
-The motivation comes from infrared spectroscopy. Conventional FTIR spectroscopy is a very powerful method for chemical identification, but when the available sample mass becomes very small, especially in the nanogram and picogram range, conventional absorption measurements become difficult.
+The motivation comes from infrared spectroscopy. Conventional FTIR spectroscopy is a very powerful method for chemical identification, but when the available sample mass becomes very small conventional absorption measurements become difficult. In this thesis I looked at sample masses in the range of approximately \SI{0.6}{\nano\gram} to \SI{40}{\nano\gram}.
 
-Nanoelectromechanical systems offer a different route. Instead of measuring absorbed light directly, the system measures the mechanical response of a membrane. If a small sample is deposited on the membrane, then both the optical absorption and the mechanical eigenfrequency response can carry information about that sample.
+Nanoelectromechanical systems offer a different route. Instead of measuring absorbed light directly, the system measures the mechanical response of a membrane as shown in the figure \textbf{HERE}. This membrane is then inserted into an infrared spectrometer as shown in the figure \textbf{HERE}. The membrane studied in this thesis is called EMILIE. It was developed by the group of Prof. Silvan Schmid at TU Wien together with invisible light labs. The device together with the spectrometer is already in use for chemical analysis, for example my colleague Jelena Timarac-Popovic has demonstrated the detection of nanoplastics in water using EMILIE.
 
-For this thesis, I focused on the mechanical side: if we know the mass distribution on the membrane, can we predict the resonance frequencies? And conversely, can measured resonance frequencies tell us something about the mass?
+For this thesis, I focused on the mechanical side. If a mass is deposited on the membrane, how does that change the eigenfrequencies? This could potentially allow mass and sample position estimation from the measured frequency shifts.
 
 \section*{Slide 3: Measurement principle}
 
-The device consists of a prestressed silicon nitride membrane. A chemical sample is deposited on this membrane and the device is used together with an infrared spectrometer.
+Sample is deposited on a prestressed
+SiN membrane which is then inserted into the spectrometer.
 
-When the sample absorbs infrared light at a characteristic wavelength, it heats up. This heat is transferred to the membrane, which changes the local stress state. Since the resonance frequencies of a prestressed membrane depend strongly on stress, the measured eigenfrequencies shift as a function of wavelength. This allows the reconstruction of an absorption spectrum.
+When the sample absorbs infrared light at a characteristic wavelength, it heats up. This heat is transferred to the membrane, which changes the stress. Since the resonance frequencies of a prestressed membrane depend strongly on stress, the measured eigenfrequencies shift as a function. The eigenfrequency shift is proportional to the sample's absorption coefficient. This allows the reconstruction of an absorption spectrum.
 
 But even without considering the wavelength-dependent absorption, the deposited material also changes the mechanical system directly. It adds mass, it may introduce its own prestress, and its position determines how strongly it overlaps with each eigenmode. These effects are the focus of the simulation.
 
@@ -53,84 +57,89 @@ A very important part of the thesis is also understanding the limits: when does 
 
 \section*{Slide 5: Simulation model}
 
-The membrane is modeled as a two-dimensional prestressed elastic structure. The two-dimensional model is important because the real membrane is extremely thin compared with its lateral dimensions. A full three-dimensional simulation would lead to difficult aspect ratios, while bending stiffness is negligible for the considered modes.
+The membrane is modeled as a two-dimensional prestressed elastic structure. The two-dimensional model is important because the real membrane is extremely thin \SI{50}{\nano\meter} to be precise. A full three-dimensional simulation would lead to difficult aspect ratios, while bending stiffness is negligible for the considered modes.
 
-The simulation has two main steps. First, a static elasticity problem is solved. This gives the displacement field and the redistributed stress field. Second, this stress field is used in a wave eigenvalue problem. After FEM discretization, this leads to the generalized eigenvalue problem shown on the slide,
-\[
-\mathbf{A}\mathbf{u} = \omega^2 \mathbf{M}\mathbf{u}.
-\]
-The eigenvalues give the resonance frequencies, and the eigenvectors give the corresponding mode shapes.
+The simulation has two main steps. First, a static elasticity problem is solved. This gives the displacement field and the redistributed stress field. Second, this stress field is used in the wave equation. I then solve the resulting eigenvalue problem of this equation to find the eigenfrequencies and mode shapes.
+
+The model is implemented in \ngsolve, which allows for a high degree of parametrization. Everything is written in Python, so I can easily change the geometry, the material properties, and the sample mass distribution. Each simulation run takes about 1 second on a standard laptop, which allows for quick iteration and testing. Furthermore \ngsolve is open source, so the code can be shared and reused by other researchers.
 
 \section*{Slide 6: Computational domain}
 
+Here you see a microscopy image of the real membran on the right and the corresponding computational domain on the left.
 The computational domain includes the main features of the real membrane: the perforated area, the electrodes, and, for sampled simulations, the deposited material.
 
-The perforation is not modeled as every individual hole. Instead, it is represented as a continuous region with effective density and effective prestress. This keeps the model computationally manageable while still capturing the dominant mechanical effect.
+The perforation is not modeled as every individual hole. Instead, it is represented as a continuous region with effective density and effective prestress. This keeps the model computationally manageable while still capturing the mechanical effect.
 
-The electrodes are included through their geometry, mass, and prestress contribution. For the deposited samples, microscopy showed approximately circular coffee-ring structures, so the sample mass was represented with ring-like distributions on the membrane.
+\section*{Slide 7: Prestress estimation}
 
-\section*{Slide 7: Validation with unsampled membranes}
+The model allows for an improved estimate of the prestress in the membrane, which was only estimated very roughly by an analytical formula before. Here you see the prestress as a function of the first eigenfrequency of the membrane. There is a significant difference to the previously used analytical formula. The blue dots represent the simulated data points, which lie nicely on a quadratic, so a quadratic fit is used to calculate the prestress of a membrane. This estimate of the prestress is in use now. 
 
-Before using the model for samples, I validated it on unsampled membranes. The membrane prestress was fitted using the fundamental $(1,1)$ mode. After that, the higher modes were predicted by the same model.
+\section*{Slide 8: Mode shapes and mass position}
 
-The important result is that the simulated eigenfrequencies agree with the experimental data within the experimental error bounds over a broad parameter range. This includes membranes with different prestress values and different sizes.
+include: 
+For the deposited samples, microscopy showed approximately circular coffee-ring structures, so the sample mass was represented with ring-like distributions on the membrane.
+
+On this slide you can some simulated modeshapes of the membrane. In the 1,1 mode, the membrane oscillates with a single node in the center. The (2,1) mode oscillates like this and the (3,1) mode like this.
+In this case I show the (3,1) mode with a sample mass in the shape of the coffee ring. The mass is mostly concentrated near the edge, which is the case because the sample is deposited in solution in a droplet, and as the droplet dries, the material tends to accumulate near the edges.
+
+The fact that there are multiple modes with each having their own eigenfrequency, one can potentially deduce the position of the sample. For example, if you had a point mass in the middle of the membrane, it would affect the (1,1) mode strongly but the (2,1) almost not at all. If you measure a strong change in the (1,1) frequency but almost no change in the (2,1) frequency, you could infer that the mass is near the center. This has been demonstrated in for cantilever shaped devices, however in this case it is harder to do since a 2D mass distribution can affect the modes in a more complex way.
+
+\section*{Slide 9: Validation with unsampled membranes}
+
+Before using the model for samples, I validated it on unsampled membranes. The membrane prestress was fitted using the fundamental $(1,1)$ mode. The higher modes were predicted by the same model.
+
+The important result is that the simulated eigenfrequencies agree with the experimental data within the experimental error bounds. In this plot you can see the experimental results that I collected for this thesis in blue and the FEM results in dashed red.
+The result almost looks overfitted, but I found equally good agreement for other membranes with different manufacturers and sizes.
 
 So the model is useful for estimating membrane prestress and for reproducing the baseline mechanical behavior of the device.
 
-\section*{Slide 8: Mode shapes and mass sensitivity}
 
-The next point is why multiple modes are useful. A deposited mass does not affect every mode in the same way. The effect depends on the spatial overlap between the mass distribution and the mode shape.
 
-For example, a mass near the center couples strongly to modes with large central displacement, but less strongly to modes with nodes or small amplitudes there. This means that several eigenfrequencies together can potentially contain information about the spatial mass distribution.
+\section*{Slide 10: Polystyrene: Measurement}
 
-However, there is also a numerical and experimental complication. If the deposited sample is large enough, the mode shapes can become distorted, and the mode detection algorithm can fail or misidentify a mode. This is one of the practical limitations of the method.
+I will now show the results for the sampled membranes. I have investigates 2 different materials, the first one is polystyrene.
+Here the experimental data shows measurable frequency shifts as the deposited mass increases. As you can see here, the measured eigenfrequencies for the largest mass of 40 ng are considerably lower than the one for 0.625 ng.
 
-\section*{Slide 9: Polystyrene results}
+\section*{Slide 11: Polystyrene: Raw Simulation data}
 
-For polystyrene, the experimental data shows measurable frequency shifts as the deposited mass increases from \SI{625}{\pico\gram} to \SI{40}{\nano\gram}.
+In the simulations, I modeled the PS samples as added mass with approximately zero prestress. As you can see here, this reproduces the qualitative trend: more sample mass leads to lower eigenfrequencies. The dashed lines show the simulation data and for reference the experimental data is shown translucently.
 
-In the simulations, I modeled the PS samples as added mass with approximately zero prestress. This reproduces the qualitative trend: more sample mass leads to lower eigenfrequencies. The agreement is reasonable, but not perfect.
+\section*{Slide 12: Polystyrene: model error}
 
-The remaining deviations are likely related to the real sample geometry. The coffee rings are not perfectly uniform, and local accumulations of material can affect individual modes. Since the simulation uses a simplified parameterization of the mass distribution, it cannot capture all of these details.
+More precisely, in this plot you can see that the model is not quite within the measured standard deviation, but the agreement is still reasonably good with deviations of up to 2.5 percent.
 
-\section*{Slide 10: Polypropylene results}
+\section*{Slide 13: Polypropylene: mass estimation and limits}
+
+The results for polystyrene can be used to verify the ability of the model to predict mass from frequency shifts.
+In this plot you can see the relative frequency shift as a function of the deposited mass. The blue graph shows the experimental data, and the dashed red line is the FEM result. The inverse of this function would give a mass prediction as a function of the relative shift in frequency after depositing the sample, which was the main goal of this thesis.
+
+In the ideal case, the simulation would only have an error within the experimental uncertainty, which would allow for a mass resolution of about \(\pm\SI{1.25}{\nano\gram}\). However, since the model does not perfectly reproduce the experimental data, the practical accuracy in this data set is closer to \(\pm\SI{5}{\nano\gram}\).
+
+This means that we can estimate the mass with this model, however 5 ng is already at the higher end of the masses measured with this device, so the applicability is limited. And it gets worse.
+
+\section*{Slide 14: Polypropylene: Measurement}
 
 Polypropylene behaved very differently. Experimentally, the PP samples showed almost no systematic decrease in eigenfrequency with increasing mass. This cannot be explained by added mass alone, because added mass should lower the frequencies.
 
-To reproduce the observed behavior, I introduced internal prestress in the deposited PP material. With a sample prestress of about \SI{5}{\mega\pascal}, the agreement improves. This suggests that the sample can stiffen the mechanical system and partially compensate the mass loading.
+\section*{Slide 14: Polypropylene: Model error with sample prestress}
 
-The key conclusion from PP is that the eigenfrequency response is not a pure mass signal. It also depends on material-specific mechanical effects. If sample prestress masks the mass-induced frequency shift, then mass prediction from eigenfrequencies alone becomes unreliable.
+To reproduce the observed behavior, I introduced internal prestress in the deposited PP material. As you can see in this plot, with a sample prestress of about \SI{5}{\mega\pascal}, the agreement of the simulation and experiment is best. This suggests that the sample can stiffen the mechanical system and partially compensate the mass loading.
 
-\section*{Slide 11: Mass estimation and limits}
+The key conclusion from PP is that the eigenfrequency response is not a pure mass signal. It also depends on material-specific mechanical effects. If sample prestress masks the mass-induced frequency shift, then mass prediction from eigenfrequencies alone becomes unfeasable.
 
-For polystyrene, the relative frequency shift is approximately linear in the considered mass range. From the FEM results, the slope is about \SI{0.4}{\percent\per\nano\gram}.
+I could, however, show, that sample prestress could well be the reason for the observed behavior. It was not clear before this thesis, whether the observed behavior was due to sample prestress or some other effect, but the simulation shows that sample prestress is a plausible explanation.
 
-Using the experimental frequency uncertainty, the ideal mass resolution would be around \(\pm\SI{1.25}{\nano\gram}\). But because the current model and experiment do not agree perfectly, the practical accuracy in this data set is closer to \(\pm\SI{5}{\nano\gram}\).
 
-This also explains why small masses are difficult. Below about \SI{10}{\nano\gram}, the expected frequency shifts are comparable to the experimental uncertainty. In that regime, it is not really possible to test or use the predictive power of the mechanical model.
+\section*{Slide 15: Conclusions}
 
-\section*{Slide 12: Conclusions}
+To summarize, I developed a two-dimensional FEM framework for modeling sampled nanomechanical membranes in NGSolve. The model reproduces unsampled membranes well, and it gives a useful basis for analyzing sampled membranes.
 
-To summarize, I developed a two-dimensional FEM framework for modeling sampled nanomechanical membranes in NGSolve. The model reproduces unsampled membranes well after fitting the membrane prestress, and it gives a useful basis for analyzing sampled membranes.
+For polystyrene, mass prediction is feasible for sufficiently large samples, roughly above \SI{10}{\nano\gram}. For polypropylene, the results show that material prestress can dominate or mask the mass effect, which makes mass determination in general difficult.
 
-For polystyrene, mass prediction is feasible for sufficiently large samples, roughly above \SI{10}{\nano\gram}. For smaller masses, the frequency shifts are too close to the measurement uncertainty. For polypropylene, the results show that material prestress can dominate or mask the mass effect, so a purely mechanical mass model is not generally enough.
 
-The most promising next step would be to build a simulation database for many possible mass distributions. Then experimental eigenfrequency data could be matched to that database, allowing not only mass estimation but also reconstruction of the spatial mass distribution.
+\section*{Slide 16: Thank you}
 
-\section*{Slide 13: Thank you}
+Thank you for joining and I am happy to take your questions.
 
-Thank you for your attention. I am happy to take your questions.
-
-\section*{Possible Questions}
-
-\textbf{Why is a two-dimensional model justified?} The membrane thickness is much smaller than the lateral size, and the bending stiffness contribution is negligible for the considered low-order modes. The dominant mechanics are prestress and mass loading.
-
-\textbf{Why fit the prestress using the $(1,1)$ mode?} The true membrane prestress is not known accurately beforehand, and the fundamental mode gives a robust reference. Once this prestress is fixed, the higher modes provide a validation of the model.
-
-\textbf{Why do PS and PP behave differently?} PS is consistent with mainly mass loading and negligible sample prestress. PP appears to introduce internal prestress, which compensates the mass-induced frequency decrease.
-
-\textbf{What limits the mass resolution?} The main limits are experimental frequency uncertainty, uncertainty in the real sample geometry, and material-specific effects such as sample prestress.
-
-\textbf{How could the method be improved?} Better microscopy-based sample geometry, repeated measurements with unsampled reference membranes, and a database of simulated mass distributions would all improve predictive power.
 
 \end{document}

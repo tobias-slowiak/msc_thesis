@@ -12,6 +12,7 @@
 \usepackage{amsmath}
 \usepackage{siunitx}
 \usepackage{booktabs}
+\usepackage{tikz}
 
 \sisetup{separate-uncertainty=true}
 
@@ -22,6 +23,36 @@
 \newcommand{\fatsig}{\boldsymbol{\sigma}}
 \newcommand{\fatA}{\mathbf{A}}
 \newcommand{\fatM}{\mathbf{M}}
+\newcommand{\ngsolve}{%
+  \includegraphics[height=1.25\fontcharht\font`A]{ngsolvelogo.png}%
+  \text{NGSolve }%
+}
+\newcommand{\normalLogoHeight}{0.7cm}
+\newcommand{\titleLogoHeight}{1.35cm}
+\newcommand{\plotTextMatchScale}{1.10}
+
+\AddToHook{shipout/foreground}{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \ifnum\value{framenumber}=1
+      \node[anchor=north east, xshift=-0.35cm, yshift=-0.22cm] at (current page.north east)
+        {\includegraphics[height=\titleLogoHeight]{tu-wien-logo-vector.pdf}};
+      \node[anchor=north east, xshift=-2.15cm, yshift=-0.22cm] at (current page.north east)
+        {\includegraphics[height=\titleLogoHeight,trim=0 55 0 55,clip]{isas.jpg}};
+    \else
+      \ifnum\value{framenumber}=\inserttotalframenumber
+        \node[anchor=south east, xshift=-0.35cm, yshift=0.55cm] at (current page.south east)
+          {\includegraphics[height=\titleLogoHeight]{tu-wien-logo-vector.pdf}};
+        \node[anchor=south east, xshift=-2.15cm, yshift=0.55cm] at (current page.south east)
+          {\includegraphics[height=\titleLogoHeight,trim=0 55 0 55,clip]{isas.jpg}};
+      \else
+        \node[anchor=north east, xshift=-0.18cm, yshift=-0.07cm] at (current page.north east)
+          {\includegraphics[height=\normalLogoHeight]{tu-wien-logo-vector.pdf}};
+        \node[anchor=north east, xshift=-0.95cm, yshift=-0.07cm] at (current page.north east)
+          {\includegraphics[height=\normalLogoHeight,trim=0 55 0 55,clip]{isas.jpg}};
+      \fi
+    \fi
+  \end{tikzpicture}%
+}
 
 \title[Mechanical FEM Simulation of Nanomembranes]{Mechanical FEM Simulation of Sampled Nanomembranes for Mass Detection}
 \author{Tobias Slowiak}
@@ -38,14 +69,16 @@
   \begin{columns}[T,onlytextwidth]
     \column{0.52\textwidth}
     \begin{itemize}
-      \item Conventional FTIR reaches sensitivity limits for very small sample masses.
-      \item NEMS-FTIR detects IR absorption through shifts of membrane eigenfrequencies.
-      \item Eigenmodes also contain information about where mass is located on the membrane.
+      \item Conventional FTIR reaches sensitivity limits for small sample masses, in this context we look at approximately $0.6-\SI{40}{\nano\gram}$.
     \end{itemize}
     \vspace{0.4cm}
-    \textbf{Goal:} build a mechanical FEM model that links deposited mass distributions to measurable resonance frequencies.
     \column{0.42\textwidth}
-    \includegraphics[width=\linewidth]{EMILIE.png}
+    \centering
+    \def\emiliePanelWidth{0.75\linewidth}
+    \includegraphics[width=\emiliePanelWidth,trim=0 0 525 0,clip]{EMILIE.png}
+    \vspace{0.12cm}
+
+    \makebox[\linewidth][c]{\hspace*{-0.05cm}\includegraphics[width=\emiliePanelWidth,trim=475 0 0 0,clip]{EMILIE.png}}
   \end{columns}
 \end{frame}
 
@@ -54,7 +87,7 @@
     \column{0.48\textwidth}
     \begin{enumerate}
       \item Sample is deposited on a prestressed $\silnit$ membrane.
-      \item IR absorption heats the sample and membrane locally.
+      \item IR absorption heats the sample and membrane.
       \item Temperature changes the membrane stress.
       \item Resonance frequencies shift as a function of wavelength.
     \end{enumerate}
@@ -66,6 +99,7 @@
         \item possible sample prestress,
         \item spatial overlap with each mode shape.
       \end{itemize}
+      \textbf{Goal:} build a mechanical FEM model that links deposited mass distributions to measurable resonance frequencies.
     \end{block}
   \end{columns}
 \end{frame}
@@ -85,33 +119,35 @@
 
 \begin{frame}{Simulation model}
   \begin{columns}[T,onlytextwidth]
-    \column{0.52\textwidth}
+    \column{0.8\textwidth}
     \begin{itemize}
       \item The membrane is modeled as a two-dimensional prestressed elastic structure.
       \item Bending stiffness is negligible for the considered modes.
-      \item Two PDE steps:
+      \item Two coupled PDEs:
       \begin{itemize}
-        \item static elasticity for displacement and stress redistribution,
-        \item wave eigenvalue problem for resonance frequencies.
-      \end{itemize}
-    \end{itemize}
-    \vspace{0.2cm}
-    \[
-      \fatA \fatu = \omega^2 \fatM \fatu
+        \item static elasticity for displacement and stress redistribution
+            \[
+              -\nabla\cdot\fatsig_\fatu = \nabla\cdot\fatsig_p,
+            \]
+        \item wave eigenvalue problem for resonance frequencies
+        \[
+            \nabla \cdot \left( \fatsig(x,y) \cdot \nabla u \right) 
+    = \rho \, \frac{\partial^2 u(x,y,t)}{\partial t^2}.
     \]
-    \column{0.42\textwidth}
-    \includegraphics[width=\linewidth]{displacement.png}
-    \vspace{0.15cm}
-    \includegraphics[width=\linewidth]{stress_field.png}
+      \end{itemize}
+      \item The model is implemented in \ngsolve therefore highly parametrizable.
+    \end{itemize}
   \end{columns}
 \end{frame}
 
 \begin{frame}{Computational domain}
   \begin{columns}[T,onlytextwidth]
     \column{0.48\textwidth}
-    \includegraphics[width=\linewidth]{mesh.png}
+    \centering
+    \includegraphics[height=0.55\textheight,trim=260 70 260 70,clip]{mesh.png}
     \column{0.48\textwidth}
-    \includegraphics[width=\linewidth]{empty_membrane.png}
+    \centering
+    \includegraphics[height=0.55\textheight]{empty_membrane.png}
   \end{columns}
   \vspace{0.25cm}
   \begin{itemize}
@@ -121,24 +157,19 @@
   \end{itemize}
 \end{frame}
 
-\begin{frame}{Validation: unsampled membranes}
-  \begin{columns}[T,onlytextwidth]
-    \column{0.52\textwidth}
-    \begin{itemize}
-      \item Membrane prestress is fitted using the $(1,1)$ mode.
-      \item Higher modes are then predicted by the same mechanical model.
-      \item Agreement is within experimental error bounds for a broad parameter range.
-    \end{itemize}
-    \vspace{0.3cm}
-    \begin{block}{Interpretation}
-      The model is reliable for estimating membrane prestress and reproducing the baseline eigenfrequency spectrum.
-    \end{block}
-    \column{0.42\textwidth}
-    \includegraphics[width=\linewidth]{para_ana_standard.pdf}
-  \end{columns}
+\begin{frame}{Prestress estimation}
+  \centering
+  \includegraphics[scale=\plotTextMatchScale]{prestress_estimator.pdf}
+  \vspace{-0.05cm}
+
+  \begin{itemize}
+    \setlength\itemsep{0pt}
+    \item The model allows for an improved estimate of the prestress, which is in use now.
+  \end{itemize}
 \end{frame}
 
-\begin{frame}{Mode shapes and mass sensitivity}
+
+\begin{frame}{Mode shapes and mass position}
   \begin{columns}[T,onlytextwidth]
     \column{0.33\textwidth}
     \includegraphics[width=\linewidth]{modeshape_(1,1).png}
@@ -158,29 +189,91 @@
   \end{itemize}
 \end{frame}
 
-\begin{frame}{Polystyrene: mass loading is visible}
+\begin{frame}{Validation: Unsampled membranes}
   \begin{columns}[T,onlytextwidth]
-    \column{0.48\textwidth}
-    \includegraphics[width=\linewidth]{fem_freqs_sampled_PS.pdf}
-    \column{0.48\textwidth}
-    \includegraphics[width=\linewidth]{rel_freq_shift_sampled.pdf}
+    \column{0.38\textwidth}
+    \begin{itemize}
+      \item Membrane prestress is fitted using the $(1,1)$ mode.
+      \item Higher modes are then predicted by the same mechanical model.
+      \item Agreement is within experimental error bounds for a broad parameter range.
+    \end{itemize}
+    \vspace{0.15cm}
+    \begin{block}{Interpretation}
+      The model is reliable for estimating membrane prestress and reproducing the baseline eigenfrequency spectrum.
+    \end{block}
+    \column{0.58\textwidth}
+    \centering
+    \includegraphics[scale=\plotTextMatchScale]{para_ana_standard.pdf}
   \end{columns}
-  \vspace{0.2cm}
+\end{frame}
+
+\begin{frame}{Polystyrene: Measurement}
+  \centering
+  \includegraphics[scale=\plotTextMatchScale]{exp_freqs_sampled_PS.pdf}
+  \vspace{-0.05cm}
+
   \begin{itemize}
+    \setlength\itemsep{0pt}
     \item PS deposits from \SI{625}{\pico\gram} to \SI{40}{\nano\gram} show measurable frequency shifts.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Polystyrene: Raw simulation data}
+  \centering
+  \includegraphics[scale=\plotTextMatchScale]{fem_freqs_sampled_PS.pdf}
+  \vspace{-0.05cm}
+
+  \begin{itemize}
+    \setlength\itemsep{0pt}
     \item Trends are reproduced qualitatively by a zero-prestress sample model.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Polystyrene: Model error}
+  \centering
+  \includegraphics[scale=\plotTextMatchScale]{mean_abs_fem_exp_difference_sampled.pdf}
+  \vspace{-0.05cm}
+
+  \begin{itemize}
+    \setlength\itemsep{0pt}
     \item Quantitative deviations likely depend on unresolved details of the coffee-ring distribution.
   \end{itemize}
 \end{frame}
 
-\begin{frame}{Polypropylene: material behavior matters}
+
+\begin{frame}{Polystyrene: Mass estimation and limits}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.28\textwidth}
+    \begin{itemize}
+      \setlength\itemsep{0.15cm}
+      \item Ideal mass resolution: $\Delta m_\mathrm{ideal} \approx \pm \SI{1.25}{\nano\gram}$.
+      \item Current practical accuracy: $\Delta m_\mathrm{current} \approx \pm \SI{5}{\nano\gram}$.
+    \end{itemize}
+    \column{0.68\textwidth}
+    \centering
+    \includegraphics[scale=\plotTextMatchScale]{rel_freq_shift_sampled.pdf}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Polypropylene: Measurement}
+  \centering
+  \includegraphics[scale=\plotTextMatchScale]{exp_freqs_sampled_PP.pdf}
+  \vspace{-0.05cm}
+
+  \begin{itemize}
+    \setlength\itemsep{0pt}
+    \item PP deposits show almost no systematic frequency decrease with increasing mass.
+    \item Added mass alone cannot explain the measurements.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Polypropylene: Model error with sample prestress}
   \begin{columns}[T,onlytextwidth]
     \column{0.5\textwidth}
-    \includegraphics[width=\linewidth]{sample_prestress_analysis.pdf}
-    \column{0.46\textwidth}
+    \centering
+    \includegraphics[scale=\plotTextMatchScale]{sample_prestress_analysis.pdf}
+    \column{0.35\textwidth}
     \begin{itemize}
-      \item PP deposits show almost no systematic frequency decrease with increasing mass.
-      \item Added mass alone cannot explain the measurements.
       \item Agreement improves when internal prestress in the PP deposit is introduced.
     \end{itemize}
     \vspace{0.25cm}
@@ -190,36 +283,13 @@
   \end{columns}
 \end{frame}
 
-\begin{frame}{Mass estimation and limits}
-  \begin{columns}[T,onlytextwidth]
-    \column{0.52\textwidth}
-    \begin{itemize}
-      \item For PS, the simulated relative frequency shift is approximately linear in the measured mass range.
-      \item Estimated slope:
-      \[
-        \frac{d f_r}{d m} \approx \SI{0.4}{\percent\per\nano\gram}
-      \]
-      \item Ideal mass resolution from experimental uncertainty:
-      \[
-        \Delta m_\mathrm{ideal} \approx \pm \SI{1.25}{\nano\gram}
-      \]
-      \item Current practical accuracy:
-      \[
-        \Delta m_\mathrm{current} \approx \pm \SI{5}{\nano\gram}
-      \]
-    \end{itemize}
-    \column{0.42\textwidth}
-    \includegraphics[width=\linewidth]{mean_abs_fem_exp_difference_sampled.pdf}
-  \end{columns}
-\end{frame}
 
 \begin{frame}{Conclusions}
   \begin{itemize}
-    \item A two-dimensional FEM framework for sampled nanomembranes was developed in NGSolve.
+    \item A two-dimensional FEM framework for sampled nanomembranes was developed in \ngsolve.
     \item Unsampled membranes are reproduced within experimental uncertainty after prestress fitting.
     \item Mass prediction is feasible for sufficiently large PS samples, roughly above \SI{10}{\nano\gram}.
-    \item Purely mechanical mass prediction is limited for small masses and for materials with significant sample prestress.
-    \item The framework can be extended toward simulation databases for reconstructing mass distributions from multiple eigenfrequencies.
+    \item Mass prediction is limited for small masses and for materials with significant sample prestress.
   \end{itemize}
 \end{frame}
 

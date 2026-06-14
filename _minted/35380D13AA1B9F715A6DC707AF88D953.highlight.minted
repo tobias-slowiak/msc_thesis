@@ -1,0 +1,67 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{k}{def}\PYG{+w}{ }\PYG{n+nf}{make\PYGZus{}geometry}\PYG{p}{(}\PYG{n}{p}\PYG{p}{:} \PYG{n}{Dict}\PYG{p}{[}\PYG{n+nb}{str}\PYG{p}{,} \PYG{n}{Any}\PYG{p}{])} \PYG{o}{\PYGZhy{}\PYGZgt{}} \PYG{n}{SplineGeometry}\PYG{p}{:}
+\PYG{+w}{    }\PYG{l+s+sd}{\PYGZdq{}\PYGZdq{}\PYGZdq{}Construct the NGSolve/Netgen geometry from parameter dict ``p``.\PYGZdq{}\PYGZdq{}\PYGZdq{}}
+    \PYG{n}{geometry} \PYG{o}{=} \PYG{n}{SplineGeometry}\PYG{p}{()}
+    \PYG{c+c1}{\PYGZsh{} Boundaries (square domain)}
+    \PYG{n}{boundary\PYGZus{}points} \PYG{o}{=} \PYG{p}{[(}\PYG{l+m+mf}{0.0}\PYG{p}{,} \PYG{l+m+mf}{0.0}\PYG{p}{),} \PYG{p}{(}\PYG{n}{p}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}Lside\PYGZdq{}}\PYG{p}{],} \PYG{l+m+mf}{0.0}\PYG{p}{),} \PYG{p}{(}\PYG{n}{p}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}Lside\PYGZdq{}}\PYG{p}{],} \PYG{n}{p}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}Lside\PYGZdq{}}\PYG{p}{]),} \PYG{p}{(}\PYG{l+m+mf}{0.0}\PYG{p}{,} \PYG{n}{p}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}Lside\PYGZdq{}}\PYG{p}{])]}
+    \PYG{n}{pnums} \PYG{o}{=} \PYG{p}{[}\PYG{n}{geometry}\PYG{o}{.}\PYG{n}{AppendPoint}\PYG{p}{(}\PYG{o}{*}\PYG{n}{pt}\PYG{p}{)} \PYG{k}{for} \PYG{n}{pt} \PYG{o+ow}{in} \PYG{n}{boundary\PYGZus{}points}\PYG{p}{]}
+    \PYG{c+c1}{\PYGZsh{} start\PYGZhy{}point, end\PYGZhy{}point, boundary\PYGZhy{}condition, domain on left side, domain on right side}
+    \PYG{n}{lines}\PYG{p}{:} \PYG{n}{List}\PYG{p}{[}\PYG{n}{Tuple}\PYG{p}{[}\PYG{n+nb}{int}\PYG{p}{,} \PYG{n+nb}{int}\PYG{p}{,} \PYG{n+nb}{str}\PYG{p}{,} \PYG{n+nb}{int}\PYG{p}{,} \PYG{n+nb}{int}\PYG{p}{]]} \PYG{o}{=} \PYG{p}{[]}
+    \PYG{k}{for} \PYG{n}{i} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{l+m+mi}{3}\PYG{p}{):}
+        \PYG{n}{lines}\PYG{o}{.}\PYG{n}{append}\PYG{p}{((}\PYG{n}{pnums}\PYG{p}{[}\PYG{n}{i}\PYG{p}{],} \PYG{n}{pnums}\PYG{p}{[}\PYG{n}{i} \PYG{o}{+} \PYG{l+m+mi}{1}\PYG{p}{],} \PYG{l+s+s2}{\PYGZdq{}fix\PYGZdq{}}\PYG{p}{,} \PYG{l+m+mi}{1}\PYG{p}{,} \PYG{l+m+mi}{0}\PYG{p}{))}
+    \PYG{n}{lines}\PYG{o}{.}\PYG{n}{append}\PYG{p}{((}\PYG{n}{pnums}\PYG{p}{[}\PYG{l+m+mi}{3}\PYG{p}{],} \PYG{n}{pnums}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{],} \PYG{l+s+s2}{\PYGZdq{}fix\PYGZdq{}}\PYG{p}{,} \PYG{l+m+mi}{1}\PYG{p}{,} \PYG{l+m+mi}{0}\PYG{p}{))}
+    \PYG{c+c1}{\PYGZsh{} Electrodes}
+    \PYG{n}{w\PYGZus{}el} \PYG{o}{=} \PYG{n}{p}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}el\PYGZus{}width\PYGZdq{}}\PYG{p}{]}
+    \PYG{n}{dists\PYGZus{}from\PYGZus{}middle} \PYG{o}{=} \PYG{p}{[}\PYG{o}{\PYGZhy{}}\PYG{n}{w\PYGZus{}el} \PYG{o}{/} \PYG{l+m+mf}{2.0}\PYG{p}{,} \PYG{o}{+}\PYG{n}{w\PYGZus{}el} \PYG{o}{/} \PYG{l+m+mf}{2.0}\PYG{p}{]}
+
+    \PYG{k}{for} \PYG{n}{dist\PYGZus{}from\PYGZus{}middle} \PYG{o+ow}{in} \PYG{n}{dists\PYGZus{}from\PYGZus{}middle}\PYG{p}{:}
+        \PYG{k}{for} \PYG{n}{lr} \PYG{o+ow}{in} \PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}l\PYGZdq{}}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}r\PYGZdq{}}\PYG{p}{):}
+            \PYG{n}{bc} \PYG{o}{=} \PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}left\PYGZus{}\PYGZdq{}} \PYG{k}{if} \PYG{n}{lr} \PYG{o}{==} \PYG{l+s+s2}{\PYGZdq{}l\PYGZdq{}} \PYG{k}{else} \PYG{l+s+s2}{\PYGZdq{}right\PYGZus{}\PYGZdq{}}\PYG{p}{)} \PYG{o}{+} \PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}inner\PYGZdq{}} \PYG{k}{if} \PYG{n}{dist\PYGZus{}from\PYGZus{}middle} \PYG{o}{==} \PYG{p}{(}\PYG{o}{\PYGZhy{}}\PYG{n}{w\PYGZus{}el} \PYG{o}{/} \PYG{l+m+mf}{2.0}\PYG{p}{)} \PYG{k}{else} \PYG{l+s+s2}{\PYGZdq{}outer\PYGZdq{}}\PYG{p}{)}
+            \PYG{n}{pnts} \PYG{o}{=} \PYG{n}{points\PYGZus{}on\PYGZus{}parabola}\PYG{p}{(}\PYG{n}{p}\PYG{p}{,} \PYG{n}{dist\PYGZus{}from\PYGZus{}middle}\PYG{p}{,} \PYG{n}{lr}\PYG{p}{)}
+            \PYG{n}{el\PYGZus{}pnums}\PYG{p}{:} \PYG{n}{List}\PYG{p}{[}\PYG{n+nb}{int}\PYG{p}{]} \PYG{o}{=} \PYG{p}{[}\PYG{n}{geometry}\PYG{o}{.}\PYG{n}{AppendPoint}\PYG{p}{(}\PYG{o}{*}\PYG{n}{pt}\PYG{p}{)} \PYG{k}{for} \PYG{n}{pt} \PYG{o+ow}{in} \PYG{n}{pnts}\PYG{p}{]}
+            \PYG{k}{for} \PYG{n}{i} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{el\PYGZus{}pnums}\PYG{p}{)} \PYG{o}{\PYGZhy{}} \PYG{l+m+mi}{1}\PYG{p}{):}
+                \PYG{n}{lines}\PYG{o}{.}\PYG{n}{append}\PYG{p}{((}\PYG{n}{el\PYGZus{}pnums}\PYG{p}{[}\PYG{n}{i}\PYG{p}{],} \PYG{n}{el\PYGZus{}pnums}\PYG{p}{[}\PYG{n}{i} \PYG{o}{+} \PYG{l+m+mi}{1}\PYG{p}{],} \PYG{n}{bc}\PYG{p}{,} \PYG{l+m+mi}{1}\PYG{p}{,} \PYG{l+m+mi}{1}\PYG{p}{))}
+
+    \PYG{c+c1}{\PYGZsh{} Perforated area}
+    \PYG{n}{perf\PYGZus{}pts} \PYG{o}{=} \PYG{n}{points\PYGZus{}on\PYGZus{}circle}\PYG{p}{(}\PYG{n}{p}\PYG{p}{,} \PYG{n}{p}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}Rperf\PYGZdq{}}\PYG{p}{],} \PYG{l+m+mf}{0.0}\PYG{p}{,} \PYG{n}{p}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}h\PYGZus{}elements\PYGZus{}perf\PYGZdq{}}\PYG{p}{],}
+                                \PYG{n}{p}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}Lside\PYGZdq{}}\PYG{p}{]} \PYG{o}{/} \PYG{l+m+mf}{2.0}\PYG{p}{,} \PYG{n}{p}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}Lside\PYGZdq{}}\PYG{p}{]} \PYG{o}{/} \PYG{l+m+mf}{2.0}\PYG{p}{)}
+    \PYG{n}{perf\PYGZus{}pnums}\PYG{p}{:} \PYG{n}{List}\PYG{p}{[}\PYG{n+nb}{int}\PYG{p}{]} \PYG{o}{=} \PYG{p}{[}\PYG{n}{geometry}\PYG{o}{.}\PYG{n}{AppendPoint}\PYG{p}{(}\PYG{o}{*}\PYG{n}{pt}\PYG{p}{)} \PYG{k}{for} \PYG{n}{pt} \PYG{o+ow}{in} \PYG{n}{perf\PYGZus{}pts}\PYG{p}{]}
+    \PYG{k}{for} \PYG{n}{i} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{perf\PYGZus{}pnums}\PYG{p}{)} \PYG{o}{\PYGZhy{}} \PYG{l+m+mi}{1}\PYG{p}{):}
+        \PYG{n}{lines}\PYG{o}{.}\PYG{n}{append}\PYG{p}{((}\PYG{n}{perf\PYGZus{}pnums}\PYG{p}{[}\PYG{n}{i}\PYG{p}{],} \PYG{n}{perf\PYGZus{}pnums}\PYG{p}{[}\PYG{n}{i} \PYG{o}{+} \PYG{l+m+mi}{1}\PYG{p}{],} \PYG{l+s+s2}{\PYGZdq{}perf\PYGZus{}border\PYGZdq{}}\PYG{p}{,} \PYG{l+m+mi}{1}\PYG{p}{,} \PYG{l+m+mi}{1}\PYG{p}{))}
+    \PYG{k}{if} \PYG{n}{perf\PYGZus{}pnums}\PYG{p}{:}
+        \PYG{n}{lines}\PYG{o}{.}\PYG{n}{append}\PYG{p}{((}\PYG{n}{perf\PYGZus{}pnums}\PYG{p}{[}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{],} \PYG{n}{perf\PYGZus{}pnums}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{],} \PYG{l+s+s2}{\PYGZdq{}perf\PYGZus{}border\PYGZdq{}}\PYG{p}{,} \PYG{l+m+mi}{1}\PYG{p}{,} \PYG{l+m+mi}{1}\PYG{p}{))}
+
+    \PYG{c+c1}{\PYGZsh{} Drop masses with coffee ring}
+    \PYG{k}{for} \PYG{n}{added\PYGZus{}mass} \PYG{o+ow}{in} \PYG{n}{p}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}added\PYGZus{}masses\PYGZdq{}}\PYG{p}{]:}
+        \PYG{n}{x\PYGZus{}coord} \PYG{o}{=} \PYG{n}{added\PYGZus{}mass}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}x\PYGZus{}coord\PYGZdq{}}\PYG{p}{]}
+        \PYG{n}{y\PYGZus{}coord} \PYG{o}{=} \PYG{n}{added\PYGZus{}mass}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}y\PYGZus{}coord\PYGZdq{}}\PYG{p}{]}
+        \PYG{n}{radius} \PYG{o}{=} \PYG{n}{added\PYGZus{}mass}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}radius\PYGZdq{}}\PYG{p}{]}
+        \PYG{n}{coffee\PYGZus{}ring\PYGZus{}width} \PYG{o}{=} \PYG{n}{added\PYGZus{}mass}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}coffee\PYGZus{}ring\PYGZus{}width\PYGZdq{}}\PYG{p}{]}
+
+        \PYG{n}{pnts\PYGZus{}dic} \PYG{o}{=} \PYG{p}{\PYGZob{}}
+            \PYG{l+s+s2}{\PYGZdq{}inner\PYGZdq{}}\PYG{p}{:} \PYG{n}{points\PYGZus{}on\PYGZus{}circle}\PYG{p}{(}\PYG{n}{p}\PYG{p}{,} \PYG{n}{radius} \PYG{o}{\PYGZhy{}} \PYG{n}{coffee\PYGZus{}ring\PYGZus{}width}\PYG{p}{,} \PYG{l+m+mf}{0.0}\PYG{p}{,}
+                                      \PYG{n}{added\PYGZus{}mass}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}h\PYGZus{}elements\PYGZus{}coffee\PYGZdq{}}\PYG{p}{],} \PYG{n}{x\PYGZus{}coord}\PYG{p}{,} \PYG{n}{y\PYGZus{}coord}\PYG{p}{),}
+            \PYG{l+s+s2}{\PYGZdq{}outer\PYGZdq{}}\PYG{p}{:} \PYG{n}{points\PYGZus{}on\PYGZus{}circle}\PYG{p}{(}\PYG{n}{p}\PYG{p}{,} \PYG{n}{radius}\PYG{p}{,} \PYG{l+m+mf}{0.0}\PYG{p}{,}
+                                      \PYG{n}{added\PYGZus{}mass}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}h\PYGZus{}elements\PYGZus{}coffee\PYGZdq{}}\PYG{p}{],} \PYG{n}{x\PYGZus{}coord}\PYG{p}{,} \PYG{n}{y\PYGZus{}coord}\PYG{p}{),}
+        \PYG{p}{\PYGZcb{}}
+
+        \PYG{n}{outer\PYGZus{}nums} \PYG{o}{=} \PYG{p}{[}\PYG{n}{geometry}\PYG{o}{.}\PYG{n}{AppendPoint}\PYG{p}{(}\PYG{o}{*}\PYG{n}{pt}\PYG{p}{)} \PYG{k}{for} \PYG{n}{pt} \PYG{o+ow}{in} \PYG{n}{pnts\PYGZus{}dic}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}outer\PYGZdq{}}\PYG{p}{]]}
+        \PYG{k}{for} \PYG{n}{i} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{outer\PYGZus{}nums}\PYG{p}{)} \PYG{o}{\PYGZhy{}} \PYG{l+m+mi}{1}\PYG{p}{):}
+            \PYG{n}{lines}\PYG{o}{.}\PYG{n}{append}\PYG{p}{((}\PYG{n}{outer\PYGZus{}nums}\PYG{p}{[}\PYG{n}{i}\PYG{p}{],} \PYG{n}{outer\PYGZus{}nums}\PYG{p}{[}\PYG{n}{i} \PYG{o}{+} \PYG{l+m+mi}{1}\PYG{p}{],} \PYG{l+s+s2}{\PYGZdq{}coffee\PYGZus{}ring\PYGZus{}outer\PYGZdq{}}\PYG{p}{,} \PYG{l+m+mi}{1}\PYG{p}{,} \PYG{l+m+mi}{1}\PYG{p}{))}
+        \PYG{k}{if} \PYG{n}{outer\PYGZus{}nums}\PYG{p}{:}
+            \PYG{n}{lines}\PYG{o}{.}\PYG{n}{append}\PYG{p}{((}\PYG{n}{outer\PYGZus{}nums}\PYG{p}{[}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{],} \PYG{n}{outer\PYGZus{}nums}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{],} \PYG{l+s+s2}{\PYGZdq{}coffee\PYGZus{}ring\PYGZus{}outer\PYGZdq{}}\PYG{p}{,} \PYG{l+m+mi}{1}\PYG{p}{,} \PYG{l+m+mi}{1}\PYG{p}{))}
+
+        \PYG{k}{if} \PYG{n}{coffee\PYGZus{}ring\PYGZus{}width} \PYG{o}{\PYGZgt{}} \PYG{l+m+mi}{0}\PYG{p}{:}
+            \PYG{n}{inner\PYGZus{}nums} \PYG{o}{=} \PYG{p}{[}\PYG{n}{geometry}\PYG{o}{.}\PYG{n}{AppendPoint}\PYG{p}{(}\PYG{o}{*}\PYG{n}{pt}\PYG{p}{)} \PYG{k}{for} \PYG{n}{pt} \PYG{o+ow}{in} \PYG{n}{pnts\PYGZus{}dic}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}inner\PYGZdq{}}\PYG{p}{]]}
+            \PYG{k}{for} \PYG{n}{i} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{inner\PYGZus{}nums}\PYG{p}{)} \PYG{o}{\PYGZhy{}} \PYG{l+m+mi}{1}\PYG{p}{):}
+                \PYG{n}{lines}\PYG{o}{.}\PYG{n}{append}\PYG{p}{((}\PYG{n}{inner\PYGZus{}nums}\PYG{p}{[}\PYG{n}{i}\PYG{p}{],} \PYG{n}{inner\PYGZus{}nums}\PYG{p}{[}\PYG{n}{i} \PYG{o}{+} \PYG{l+m+mi}{1}\PYG{p}{],} \PYG{l+s+s2}{\PYGZdq{}coffee\PYGZus{}ring\PYGZus{}inner\PYGZdq{}}\PYG{p}{,} \PYG{l+m+mi}{1}\PYG{p}{,} \PYG{l+m+mi}{1}\PYG{p}{))}
+            \PYG{k}{if} \PYG{n}{inner\PYGZus{}nums}\PYG{p}{:}
+                \PYG{n}{lines}\PYG{o}{.}\PYG{n}{append}\PYG{p}{((}\PYG{n}{inner\PYGZus{}nums}\PYG{p}{[}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{p}{],} \PYG{n}{inner\PYGZus{}nums}\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{],} \PYG{l+s+s2}{\PYGZdq{}coffee\PYGZus{}ring\PYGZus{}inner\PYGZdq{}}\PYG{p}{,} \PYG{l+m+mi}{1}\PYG{p}{,} \PYG{l+m+mi}{1}\PYG{p}{))}
+
+    \PYG{c+c1}{\PYGZsh{} Add lines to geometry}
+    \PYG{k}{for} \PYG{n}{p1}\PYG{p}{,} \PYG{n}{p2}\PYG{p}{,} \PYG{n}{bc}\PYG{p}{,} \PYG{n}{left}\PYG{p}{,} \PYG{n}{right} \PYG{o+ow}{in} \PYG{n}{lines}\PYG{p}{:}
+        \PYG{n}{geometry}\PYG{o}{.}\PYG{n}{Append}\PYG{p}{([}\PYG{l+s+s2}{\PYGZdq{}line\PYGZdq{}}\PYG{p}{,} \PYG{n}{p1}\PYG{p}{,} \PYG{n}{p2}\PYG{p}{],} \PYG{n}{bc}\PYG{o}{=}\PYG{n}{bc}\PYG{p}{,} \PYG{n}{leftdomain}\PYG{o}{=}\PYG{n}{left}\PYG{p}{,} \PYG{n}{rightdomain}\PYG{o}{=}\PYG{n}{right}\PYG{p}{)}
+
+    \PYG{k}{return} \PYG{n}{geometry}
+
+\end{MintedVerbatim}

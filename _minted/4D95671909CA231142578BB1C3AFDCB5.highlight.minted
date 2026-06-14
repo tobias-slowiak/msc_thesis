@@ -1,0 +1,10 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{k}{def}\PYG{+w}{ }\PYG{n+nf}{stress}\PYG{p}{(}\PYG{n}{p}\PYG{p}{,} \PYG{n}{strain}\PYG{p}{):}
+\PYG{+w}{    }\PYG{l+s+sd}{\PYGZdq{}\PYGZdq{}\PYGZdq{}Return stress tensor for given strain based on parameter dict p.\PYGZdq{}\PYGZdq{}\PYGZdq{}}
+    \PYG{n}{E\PYGZus{}fct} \PYG{o}{=} \PYG{n}{CF}\PYG{p}{(}\PYG{n}{p}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}Esin\PYGZdq{}}\PYG{p}{]} \PYG{o}{*} \PYG{p}{(}\PYG{l+m+mi}{1} \PYG{o}{\PYGZhy{}} \PYG{p}{(}\PYG{l+m+mi}{1} \PYG{o}{\PYGZhy{}} \PYG{n}{p}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}Epercentage\PYGZus{}perf\PYGZdq{}}\PYG{p}{])} \PYG{o}{*} \PYG{n}{geom\PYGZus{}perf}\PYG{p}{(}\PYG{n}{p}\PYG{p}{)))}
+    \PYG{n}{nu\PYGZus{}fct} \PYG{o}{=} \PYG{n}{CF}\PYG{p}{(}\PYG{n}{p}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}nu\PYGZdq{}}\PYG{p}{]} \PYG{o}{*} \PYG{p}{(}\PYG{l+m+mi}{1} \PYG{o}{\PYGZhy{}} \PYG{p}{(}\PYG{l+m+mi}{1} \PYG{o}{\PYGZhy{}} \PYG{n}{p}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}nupercentage\PYGZus{}perf\PYGZdq{}}\PYG{p}{])} \PYG{o}{*} \PYG{n}{geom\PYGZus{}perf}\PYG{p}{(}\PYG{n}{p}\PYG{p}{)))}
+    \PYG{n}{mu\PYGZus{}fct} \PYG{o}{=} \PYG{n}{CF}\PYG{p}{(}\PYG{n}{E\PYGZus{}fct} \PYG{o}{/} \PYG{p}{(}\PYG{l+m+mi}{2} \PYG{o}{*} \PYG{p}{(}\PYG{l+m+mi}{1} \PYG{o}{+} \PYG{n}{nu\PYGZus{}fct}\PYG{p}{)))}
+    \PYG{n}{lam\PYGZus{}fct} \PYG{o}{=} \PYG{n}{CF}\PYG{p}{(}\PYG{n}{E\PYGZus{}fct} \PYG{o}{*} \PYG{n}{nu\PYGZus{}fct} \PYG{o}{/} \PYG{p}{(}\PYG{l+m+mi}{1} \PYG{o}{\PYGZhy{}} \PYG{n}{nu\PYGZus{}fct} \PYG{o}{*} \PYG{n}{nu\PYGZus{}fct}\PYG{p}{))}
+    \PYG{k}{return} \PYG{l+m+mi}{2} \PYG{o}{*} \PYG{n}{mu\PYGZus{}fct} \PYG{o}{*} \PYG{n}{strain} \PYG{o}{+} \PYG{n}{lam\PYGZus{}fct} \PYG{o}{*} \PYG{n}{Trace}\PYG{p}{(}\PYG{n}{strain}\PYG{p}{)} \PYG{o}{*} \PYG{n}{Id}\PYG{p}{(}\PYG{l+m+mi}{2}\PYG{p}{)}
+
+\end{MintedVerbatim}

@@ -1,0 +1,4 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{n}{a} \PYG{o}{+=} \PYG{n}{SymbolicBFI}\PYG{p}{(}\PYG{n}{InnerProduct}\PYG{p}{((}\PYG{n}{gfstress} \PYG{o}{*} \PYG{n}{grad}\PYG{p}{(}\PYG{n}{u}\PYG{p}{)),} \PYG{n}{grad}\PYG{p}{(}\PYG{n}{v}\PYG{p}{)))}
+\PYG{n}{m} \PYG{o}{+=} \PYG{n}{SymbolicBFI}\PYG{p}{(}\PYG{n}{rhofct} \PYG{o}{*} \PYG{n}{u} \PYG{o}{*} \PYG{n}{v}\PYG{p}{)}
+\end{MintedVerbatim}

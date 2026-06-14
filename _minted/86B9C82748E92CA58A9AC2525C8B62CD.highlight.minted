@@ -1,0 +1,3 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{n}{f} \PYG{o}{=} \PYG{n}{LinearForm}\PYG{p}{(}\PYG{n}{force\PYGZus{}l}\PYG{o}{*}\PYG{n}{v}\PYG{o}{*}\PYG{n}{ds}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}left\PYGZus{}inner\PYGZdq{}}\PYG{p}{)} \PYG{o}{\PYGZhy{}} \PYG{n}{force\PYGZus{}l}\PYG{o}{*}\PYG{n}{v}\PYG{o}{*}\PYG{n}{ds}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}left\PYGZus{}outer\PYGZdq{}}\PYG{p}{)} \PYG{o}{+} \PYG{p}{[}\PYG{o}{...}\PYG{p}{])}
+\end{MintedVerbatim}

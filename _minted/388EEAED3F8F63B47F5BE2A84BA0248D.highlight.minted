@@ -1,0 +1,51 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{k}{def}\PYG{+w}{ }\PYG{n+nf}{solve\PYGZus{}pinvit}\PYG{p}{(}\PYG{n}{p}\PYG{p}{,} \PYG{n}{feswave}\PYG{p}{,} \PYG{n}{pre}\PYG{p}{,} \PYG{n}{a}\PYG{p}{,} \PYG{n}{m}\PYG{p}{,} \PYG{n}{verbose}\PYG{p}{:} \PYG{n+nb}{bool} \PYG{o}{=} \PYG{k+kc}{False}\PYG{p}{):}
+\PYG{+w}{    }\PYG{l+s+sd}{\PYGZdq{}\PYGZdq{}\PYGZdq{}Solve eigenvalue problem using block power iteration (PINVIT).\PYGZdq{}\PYGZdq{}\PYGZdq{}}
+    \PYG{n}{num} \PYG{o}{=} \PYG{n}{p}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}num\PYGZus{}modes\PYGZdq{}}\PYG{p}{]}
+    \PYG{n}{u} \PYG{o}{=} \PYG{n}{GridFunction}\PYG{p}{(}\PYG{n}{feswave}\PYG{p}{,} \PYG{n}{multidim}\PYG{o}{=}\PYG{n}{num}\PYG{p}{)}
+    \PYG{n}{r} \PYG{o}{=} \PYG{n}{u}\PYG{o}{.}\PYG{n}{vec}\PYG{o}{.}\PYG{n}{CreateVector}\PYG{p}{()}
+    \PYG{n}{Av} \PYG{o}{=} \PYG{n}{u}\PYG{o}{.}\PYG{n}{vec}\PYG{o}{.}\PYG{n}{CreateVector}\PYG{p}{()}
+    \PYG{n}{Mv} \PYG{o}{=} \PYG{n}{u}\PYG{o}{.}\PYG{n}{vec}\PYG{o}{.}\PYG{n}{CreateVector}\PYG{p}{()}
+    \PYG{n}{freedofs} \PYG{o}{=} \PYG{n}{feswave}\PYG{o}{.}\PYG{n}{FreeDofs}\PYG{p}{()}
+    \PYG{n}{vecs} \PYG{o}{=} \PYG{p}{[}\PYG{n}{u}\PYG{o}{.}\PYG{n}{vec}\PYG{o}{.}\PYG{n}{CreateVector}\PYG{p}{()} \PYG{k}{for} \PYG{n}{\PYGZus{}} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{l+m+mi}{2} \PYG{o}{*} \PYG{n}{num}\PYG{p}{)]}
+
+    \PYG{c+c1}{\PYGZsh{} random initialization}
+    \PYG{k}{for} \PYG{n}{vec} \PYG{o+ow}{in} \PYG{n}{u}\PYG{o}{.}\PYG{n}{vecs}\PYG{p}{:}
+        \PYG{k}{for} \PYG{n}{i} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{u}\PYG{o}{.}\PYG{n}{vec}\PYG{p}{)):}
+            \PYG{n}{vec}\PYG{o}{.}\PYG{n}{data}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{random}\PYG{o}{.}\PYG{n}{rand}\PYG{p}{()} \PYG{k}{if} \PYG{n}{freedofs}\PYG{p}{[}\PYG{n}{i}\PYG{p}{]} \PYG{k}{else} \PYG{l+m+mi}{0}
+
+    \PYG{n}{asmall} \PYG{o}{=} \PYG{n}{Matrix}\PYG{p}{(}\PYG{l+m+mi}{2} \PYG{o}{*} \PYG{n}{num}\PYG{p}{,} \PYG{l+m+mi}{2} \PYG{o}{*} \PYG{n}{num}\PYG{p}{)}
+    \PYG{n}{msmall} \PYG{o}{=} \PYG{n}{Matrix}\PYG{p}{(}\PYG{l+m+mi}{2} \PYG{o}{*} \PYG{n}{num}\PYG{p}{,} \PYG{l+m+mi}{2} \PYG{o}{*} \PYG{n}{num}\PYG{p}{)}
+    \PYG{n}{lams} \PYG{o}{=} \PYG{p}{[}\PYG{l+m+mi}{1}\PYG{p}{]} \PYG{o}{*} \PYG{n}{num}
+    \PYG{n}{oldlams} \PYG{o}{=} \PYG{p}{[}\PYG{l+m+mf}{1e12}\PYG{p}{]} \PYG{o}{*} \PYG{n}{num}
+    \PYG{n}{num\PYGZus{}iter} \PYG{o}{=} \PYG{l+m+mi}{0}
+    \PYG{n}{max\PYGZus{}iter} \PYG{o}{=} \PYG{l+m+mi}{500}
+    \PYG{k}{while} \PYG{n+nb}{sum}\PYG{p}{(}\PYG{n+nb}{abs}\PYG{p}{(}\PYG{n}{l} \PYG{o}{\PYGZhy{}} \PYG{n}{o}\PYG{p}{)} \PYG{k}{for} \PYG{n}{l}\PYG{p}{,} \PYG{n}{o} \PYG{o+ow}{in} \PYG{n+nb}{zip}\PYG{p}{(}\PYG{n}{lams}\PYG{p}{,} \PYG{n}{oldlams}\PYG{p}{))} \PYG{o}{\PYGZgt{}} \PYG{n}{p}\PYG{p}{[}\PYG{l+s+s2}{\PYGZdq{}convcrit\PYGZdq{}}\PYG{p}{]} \PYG{o+ow}{and} \PYG{n}{num\PYGZus{}iter} \PYG{o}{\PYGZlt{}} \PYG{n}{max\PYGZus{}iter}\PYG{p}{:}
+        \PYG{n}{num\PYGZus{}iter} \PYG{o}{+=} \PYG{l+m+mi}{1}
+        \PYG{n}{oldlams}\PYG{p}{[:]} \PYG{o}{=} \PYG{n}{lams}\PYG{p}{[:]}
+        \PYG{k}{for} \PYG{n}{j} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{n}{num}\PYG{p}{):}
+            \PYG{n}{vecs}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]}\PYG{o}{.}\PYG{n}{data} \PYG{o}{=} \PYG{n}{u}\PYG{o}{.}\PYG{n}{vecs}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]}
+            \PYG{n}{r}\PYG{o}{.}\PYG{n}{data} \PYG{o}{=} \PYG{n}{a}\PYG{o}{.}\PYG{n}{mat} \PYG{o}{*} \PYG{n}{vecs}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]} \PYG{o}{\PYGZhy{}} \PYG{n}{lams}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]} \PYG{o}{*} \PYG{n}{m}\PYG{o}{.}\PYG{n}{mat} \PYG{o}{*} \PYG{n}{vecs}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]}
+            \PYG{n}{vecs}\PYG{p}{[}\PYG{n}{num} \PYG{o}{+} \PYG{n}{j}\PYG{p}{]}\PYG{o}{.}\PYG{n}{data} \PYG{o}{=} \PYG{n}{pre}\PYG{o}{.}\PYG{n}{mat} \PYG{o}{*} \PYG{n}{r}
+
+        \PYG{k}{for} \PYG{n}{j} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{l+m+mi}{2} \PYG{o}{*} \PYG{n}{num}\PYG{p}{):}
+            \PYG{n}{Av}\PYG{o}{.}\PYG{n}{data} \PYG{o}{=} \PYG{n}{a}\PYG{o}{.}\PYG{n}{mat} \PYG{o}{*} \PYG{n}{vecs}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]}
+            \PYG{n}{Mv}\PYG{o}{.}\PYG{n}{data} \PYG{o}{=} \PYG{n}{m}\PYG{o}{.}\PYG{n}{mat} \PYG{o}{*} \PYG{n}{vecs}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]}
+            \PYG{k}{for} \PYG{n}{k} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{l+m+mi}{2} \PYG{o}{*} \PYG{n}{num}\PYG{p}{):}
+                \PYG{n}{asmall}\PYG{p}{[}\PYG{n}{j}\PYG{p}{,} \PYG{n}{k}\PYG{p}{]} \PYG{o}{=} \PYG{n}{InnerProduct}\PYG{p}{(}\PYG{n}{Av}\PYG{p}{,} \PYG{n}{vecs}\PYG{p}{[}\PYG{n}{k}\PYG{p}{])}
+                \PYG{n}{msmall}\PYG{p}{[}\PYG{n}{j}\PYG{p}{,} \PYG{n}{k}\PYG{p}{]} \PYG{o}{=} \PYG{n}{InnerProduct}\PYG{p}{(}\PYG{n}{Mv}\PYG{p}{,} \PYG{n}{vecs}\PYG{p}{[}\PYG{n}{k}\PYG{p}{])}
+
+        \PYG{n}{ev}\PYG{p}{,} \PYG{n}{evec} \PYG{o}{=} \PYG{n}{scipy}\PYG{o}{.}\PYG{n}{linalg}\PYG{o}{.}\PYG{n}{eigh}\PYG{p}{(}\PYG{n}{a}\PYG{o}{=}\PYG{n}{asmall}\PYG{p}{,} \PYG{n}{b}\PYG{o}{=}\PYG{n}{msmall}\PYG{p}{)}
+        \PYG{n}{lams}\PYG{p}{[:]} \PYG{o}{=} \PYG{n}{ev}\PYG{p}{[:}\PYG{n}{num}\PYG{p}{]}
+        \PYG{k}{if} \PYG{n}{verbose}\PYG{p}{:}
+            \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}Eigenvalues:\PYGZdq{}}\PYG{p}{,} \PYG{n}{lams}\PYG{p}{)}
+
+        \PYG{k}{for} \PYG{n}{j} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{n}{num}\PYG{p}{):}
+            \PYG{n}{u}\PYG{o}{.}\PYG{n}{vecs}\PYG{p}{[}\PYG{n}{j}\PYG{p}{][:]} \PYG{o}{=} \PYG{l+m+mf}{0.0}
+            \PYG{k}{for} \PYG{n}{k} \PYG{o+ow}{in} \PYG{n+nb}{range}\PYG{p}{(}\PYG{l+m+mi}{2} \PYG{o}{*} \PYG{n}{num}\PYG{p}{):}
+                \PYG{n}{u}\PYG{o}{.}\PYG{n}{vecs}\PYG{p}{[}\PYG{n}{j}\PYG{p}{]}\PYG{o}{.}\PYG{n}{data} \PYG{o}{+=} \PYG{n+nb}{float}\PYG{p}{(}\PYG{n}{evec}\PYG{p}{[}\PYG{n}{k}\PYG{p}{,} \PYG{n}{j}\PYG{p}{])} \PYG{o}{*} \PYG{n}{vecs}\PYG{p}{[}\PYG{n}{k}\PYG{p}{]}
+    \PYG{k}{if} \PYG{n}{num\PYGZus{}iter} \PYG{o}{\PYGZgt{}} \PYG{n}{max\PYGZus{}iter} \PYG{o}{\PYGZhy{}} \PYG{l+m+mi}{2}\PYG{p}{:}
+        \PYG{n+nb}{print}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}max iterations exceeded. return None.\PYGZdq{}}\PYG{p}{)}
+        \PYG{k}{return} \PYG{k+kc}{None}\PYG{p}{,} \PYG{k+kc}{None}
+    \PYG{k}{return} \PYG{n}{lams}\PYG{p}{,} \PYG{n}{u}
+\end{MintedVerbatim}

@@ -1,0 +1,11 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{k}{def}\PYG{+w}{ }\PYG{n+nf}{stress\PYGZus{}field}\PYG{p}{(}\PYG{n}{p}\PYG{p}{,} \PYG{n}{gfuela}\PYG{p}{,} \PYG{n}{mesh}\PYG{p}{):}
+\PYG{+w}{    }\PYG{l+s+sd}{\PYGZdq{}\PYGZdq{}\PYGZdq{}Return combined stress field (elastic + prestress).\PYGZdq{}\PYGZdq{}\PYGZdq{}}
+    \PYG{n}{sigfct} \PYG{o}{=} \PYG{n}{generate\PYGZus{}sig\PYGZus{}fct}\PYG{p}{(}\PYG{n}{p}\PYG{p}{)}
+    \PYG{n}{fesstress} \PYG{o}{=} \PYG{n}{MatrixValued}\PYG{p}{(}\PYG{n}{L2}\PYG{p}{(}\PYG{n}{mesh}\PYG{p}{,} \PYG{n}{order}\PYG{o}{=}\PYG{l+m+mi}{0}\PYG{p}{),} \PYG{n}{symmetric}\PYG{o}{=}\PYG{k+kc}{True}\PYG{p}{)}
+    \PYG{n}{ustress} \PYG{o}{=} \PYG{n}{GridFunction}\PYG{p}{(}\PYG{n}{fesstress}\PYG{p}{)}
+    \PYG{n}{ustress}\PYG{o}{.}\PYG{n}{Interpolate}\PYG{p}{(}\PYG{n}{stress}\PYG{p}{(}\PYG{n}{p}\PYG{p}{,} \PYG{n}{Sym}\PYG{p}{(}\PYG{n}{Grad}\PYG{p}{(}\PYG{n}{gfuela}\PYG{p}{))),} \PYG{n}{fesstress}\PYG{p}{)}
+    \PYG{n}{prestress} \PYG{o}{=} \PYG{n}{GridFunction}\PYG{p}{(}\PYG{n}{fesstress}\PYG{p}{)}
+    \PYG{n}{prestress}\PYG{o}{.}\PYG{n}{Interpolate}\PYG{p}{(}\PYG{n}{sigfct}\PYG{p}{,} \PYG{n}{fesstress}\PYG{p}{)}
+    \PYG{k}{return} \PYG{n}{ustress} \PYG{o}{+} \PYG{n}{prestress}
+\end{MintedVerbatim}

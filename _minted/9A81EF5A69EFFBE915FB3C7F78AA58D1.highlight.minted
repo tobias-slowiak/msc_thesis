@@ -1,0 +1,20 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{k}{def}\PYG{+w}{ }\PYG{n+nf}{generate\PYGZus{}fes\PYGZus{}wave}\PYG{p}{(}\PYG{n}{mesh}\PYG{p}{,} \PYG{n}{gfstress}\PYG{p}{,} \PYG{n}{rhofct}\PYG{p}{,} \PYG{n}{preconditioner}\PYG{p}{:} \PYG{n+nb}{str} \PYG{o}{=} \PYG{l+s+s2}{\PYGZdq{}multigrid\PYGZdq{}}\PYG{p}{):}
+\PYG{+w}{    }\PYG{l+s+sd}{\PYGZdq{}\PYGZdq{}\PYGZdq{}Generate FE spaces and assembled forms for wave problem.\PYGZdq{}\PYGZdq{}\PYGZdq{}}
+    \PYG{n}{feswave} \PYG{o}{=} \PYG{n}{H1}\PYG{p}{(}\PYG{n}{mesh}\PYG{p}{,} \PYG{n}{order}\PYG{o}{=}\PYG{l+m+mi}{2}\PYG{p}{,} \PYG{n}{dirichlet}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}fix\PYGZdq{}}\PYG{p}{)}
+    \PYG{n}{u} \PYG{o}{=} \PYG{n}{feswave}\PYG{o}{.}\PYG{n}{TrialFunction}\PYG{p}{()}
+    \PYG{n}{v} \PYG{o}{=} \PYG{n}{feswave}\PYG{o}{.}\PYG{n}{TestFunction}\PYG{p}{()}
+
+    \PYG{n}{a} \PYG{o}{=} \PYG{n}{BilinearForm}\PYG{p}{(}\PYG{n}{feswave}\PYG{p}{)}
+    \PYG{n}{a} \PYG{o}{+=} \PYG{n}{SymbolicBFI}\PYG{p}{(}\PYG{n}{InnerProduct}\PYG{p}{((}\PYG{n}{gfstress} \PYG{o}{*} \PYG{n}{grad}\PYG{p}{(}\PYG{n}{u}\PYG{p}{)),} \PYG{n}{grad}\PYG{p}{(}\PYG{n}{v}\PYG{p}{)))}
+    \PYG{n}{pre} \PYG{o}{=} \PYG{n}{Preconditioner}\PYG{p}{(}\PYG{n}{a}\PYG{p}{,} \PYG{n}{preconditioner}\PYG{p}{)}
+
+    \PYG{n}{m} \PYG{o}{=} \PYG{n}{BilinearForm}\PYG{p}{(}\PYG{n}{feswave}\PYG{p}{)}
+    \PYG{n}{m} \PYG{o}{+=} \PYG{n}{SymbolicBFI}\PYG{p}{(}\PYG{n}{rhofct} \PYG{o}{*} \PYG{n}{u} \PYG{o}{*} \PYG{n}{v}\PYG{p}{)}
+
+    \PYG{n}{a}\PYG{o}{.}\PYG{n}{Assemble}\PYG{p}{()}
+    \PYG{n}{m}\PYG{o}{.}\PYG{n}{Assemble}\PYG{p}{()}
+
+    \PYG{k}{return} \PYG{n}{feswave}\PYG{p}{,} \PYG{n}{a}\PYG{p}{,} \PYG{n}{m}\PYG{p}{,} \PYG{n}{pre}
+
+\end{MintedVerbatim}

@@ -1,0 +1,21 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{k}{def}\PYG{+w}{ }\PYG{n+nf}{generate\PYGZus{}fes\PYGZus{}ela}\PYG{p}{(}\PYG{n}{p}\PYG{p}{,} \PYG{n}{mesh}\PYG{p}{):}
+\PYG{+w}{    }\PYG{l+s+sd}{\PYGZdq{}\PYGZdq{}\PYGZdq{}Generate finite element space and assembled system for elasticity.\PYGZdq{}\PYGZdq{}\PYGZdq{}}
+    \PYG{n}{fes} \PYG{o}{=} \PYG{n}{VectorH1}\PYG{p}{(}\PYG{n}{mesh}\PYG{p}{,} \PYG{n}{order}\PYG{o}{=}\PYG{l+m+mi}{3}\PYG{p}{,} \PYG{n}{dirichlet}\PYG{o}{=}\PYG{l+s+s2}{\PYGZdq{}fix\PYGZdq{}}\PYG{p}{)}
+    \PYG{n}{u} \PYG{o}{=} \PYG{n}{fes}\PYG{o}{.}\PYG{n}{TrialFunction}\PYG{p}{()}
+    \PYG{n}{v} \PYG{o}{=} \PYG{n}{fes}\PYG{o}{.}\PYG{n}{TestFunction}\PYG{p}{()}
+    \PYG{n}{gfu} \PYG{o}{=} \PYG{n}{GridFunction}\PYG{p}{(}\PYG{n}{fes}\PYG{p}{)}
+
+    \PYG{n}{force\PYGZus{}l}\PYG{p}{,} \PYG{n}{force\PYGZus{}r}\PYG{p}{,} \PYG{n}{force\PYGZus{}outer}\PYG{p}{,} \PYG{n}{force\PYGZus{}inner} \PYG{o}{=} \PYG{n}{force\PYGZus{}CF}\PYG{p}{(}\PYG{n}{p}\PYG{p}{,} \PYG{n}{x}\PYG{p}{,} \PYG{n}{y}\PYG{p}{)}
+    \PYG{n}{f} \PYG{o}{=} \PYG{n}{LinearForm}\PYG{p}{(}
+        \PYG{n}{force\PYGZus{}l} \PYG{o}{*} \PYG{n}{v} \PYG{o}{*} \PYG{n}{ds}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}left\PYGZus{}inner\PYGZdq{}}\PYG{p}{)} \PYG{o}{\PYGZhy{}} \PYG{n}{force\PYGZus{}l} \PYG{o}{*} \PYG{n}{v} \PYG{o}{*} \PYG{n}{ds}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}left\PYGZus{}outer\PYGZdq{}}\PYG{p}{)}
+        \PYG{o}{+} \PYG{n}{force\PYGZus{}r} \PYG{o}{*} \PYG{n}{v} \PYG{o}{*} \PYG{n}{ds}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}right\PYGZus{}inner\PYGZdq{}}\PYG{p}{)} \PYG{o}{\PYGZhy{}} \PYG{n}{force\PYGZus{}r} \PYG{o}{*} \PYG{n}{v} \PYG{o}{*} \PYG{n}{ds}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}right\PYGZus{}outer\PYGZdq{}}\PYG{p}{)}
+        \PYG{o}{\PYGZhy{}} \PYG{n}{force\PYGZus{}outer} \PYG{o}{*} \PYG{n}{v} \PYG{o}{*} \PYG{n}{ds}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}coffee\PYGZus{}ring\PYGZus{}outer\PYGZdq{}}\PYG{p}{)} \PYG{o}{+} \PYG{n}{force\PYGZus{}inner} \PYG{o}{*} \PYG{n}{v} \PYG{o}{*} \PYG{n}{ds}\PYG{p}{(}\PYG{l+s+s2}{\PYGZdq{}coffee\PYGZus{}ring\PYGZus{}inner\PYGZdq{}}\PYG{p}{)}
+    \PYG{p}{)}\PYG{o}{.}\PYG{n}{Assemble}\PYG{p}{()}
+
+    \PYG{n}{a} \PYG{o}{=} \PYG{n}{BilinearForm}\PYG{p}{(}\PYG{n}{InnerProduct}\PYG{p}{(}\PYG{n}{stress}\PYG{p}{(}\PYG{n}{p}\PYG{p}{,} \PYG{n}{Sym}\PYG{p}{(}\PYG{n}{Grad}\PYG{p}{(}\PYG{n}{u}\PYG{p}{))),} \PYG{n}{Sym}\PYG{p}{(}\PYG{n}{Grad}\PYG{p}{(}\PYG{n}{v}\PYG{p}{)))}\PYG{o}{.}\PYG{n}{Compile}\PYG{p}{()} \PYG{o}{*} \PYG{n}{dx}\PYG{p}{)}
+    \PYG{n}{pre} \PYG{o}{=} \PYG{n}{Preconditioner}\PYG{p}{(}\PYG{n}{a}\PYG{p}{,} \PYG{l+s+s2}{\PYGZdq{}bddc\PYGZdq{}}\PYG{p}{)}
+    \PYG{n}{a}\PYG{o}{.}\PYG{n}{Assemble}\PYG{p}{()}
+
+    \PYG{k}{return} \PYG{n}{fes}\PYG{p}{,} \PYG{n}{u}\PYG{p}{,} \PYG{n}{v}\PYG{p}{,} \PYG{n}{gfu}\PYG{p}{,} \PYG{n}{f}\PYG{p}{,} \PYG{n}{a}\PYG{p}{,} \PYG{n}{pre}
+\end{MintedVerbatim}
