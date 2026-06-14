@@ -10,8 +10,11 @@
 *.log
 *.out
 *.run.xml
+*.nav
+*.snm
 *.synctex.gz
 *.toc
+*.vrb
 
 # Editor and OS metadata
 .DS_Store
