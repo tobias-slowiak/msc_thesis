@@ -4,6 +4,7 @@
 \usecolortheme{seahorse}
 \setbeamertemplate{navigation symbols}{}
 \setbeamertemplate{footline}[frame number]
+\setbeamercovered{invisible}
 
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -30,6 +31,20 @@
 \newcommand{\normalLogoHeight}{0.7cm}
 \newcommand{\titleLogoHeight}{1.35cm}
 \newcommand{\plotTextMatchScale}{1.10}
+\newcommand{\sampleRingRadius}{1.09cm}
+\newcommand{\sampleRingThickness}{1.3pt}
+\newcommand{\modeShapeWithCenterDot}[1]{%
+  \begin{tikzpicture}
+    \node[inner sep=0pt] (modeplot) {\includegraphics[width=\linewidth]{#1}};
+    \fill[yellow,draw=black,line width=0.35pt] (modeplot.center) circle[radius=0.09cm];
+  \end{tikzpicture}%
+}
+\newcommand{\modeShapeWithCenterRing}[3]{%
+  \begin{tikzpicture}
+    \node[inner sep=0pt] (modeplot) {\includegraphics[width=\linewidth]{#1}};
+    \only<2->{\draw[yellow,line width=#3] (modeplot.center) circle[radius=#2];}
+  \end{tikzpicture}%
+}
 
 \AddToHook{shipout/foreground}{%
   \begin{tikzpicture}[remember picture,overlay]
@@ -65,12 +80,18 @@
   \titlepage
 \end{frame}
 
-\begin{frame}{Why nanomechanical membranes?}
+\begin{frame}{Nanoelectromechanical membranes}
   \begin{columns}[T,onlytextwidth]
     \column{0.52\textwidth}
-    \begin{itemize}
-      \item Conventional FTIR reaches sensitivity limits for small sample masses, in this context we look at approximately $0.6-\SI{40}{\nano\gram}$.
+    \begin{itemize}[<+(1)->]
+      \item EMILIE is a device for improved Infrared Spectroscopy.
+      \item Enables characterization of very small sample masses.
+      \item In this context we look at approximately\\$0.6$ - $\SI{40}{\nano\gram}$.
     \end{itemize}
+    \begin{block}<+(1)->{Mechanical information}
+      This thesis focuses on the \textbf{purely mechanical} response of the EMILIE membranes to deposited samples
+      to extract information about the sample.
+      \end{block}
     \vspace{0.4cm}
     \column{0.42\textwidth}
     \centering
@@ -82,61 +103,61 @@
   \end{columns}
 \end{frame}
 
-\begin{frame}{Measurement principle}
-  \begin{columns}[T,onlytextwidth]
-    \column{0.48\textwidth}
-    \begin{enumerate}
-      \item Sample is deposited on a prestressed $\silnit$ membrane.
-      \item IR absorption heats the sample and membrane.
-      \item Temperature changes the membrane stress.
-      \item Resonance frequencies shift as a function of wavelength.
+\begin{frame}{Motivation and Problem Statement}
+    \begin{enumerate}[<+(1)->]
+      \item Previous simulation attempts in \textsc{Comsol} had problems due to element aspect ratios etc.
+      \item Smaller computational cost would be desirable for some possible applications.
     \end{enumerate}
-    \column{0.46\textwidth}
-    \begin{block}{Mechanical information}
-      A deposited sample changes the eigenfrequencies through
-      \begin{itemize}
-        \item added mass,
-        \item possible sample prestress,
-        \item spatial overlap with each mode shape.
+    \begin{block}<+(1)->{Main Objective}
+      \begin{itemize}[<+->]
+        \item Assess whether a purely mechanical simulation can capture the system behavior
+        \item Estimate the membrane prestress from the measured response
+        \item Evaluate how accurately the sample mass can be inferred from the mechanical response
+        \item Evaluate how accurately the sample position can be inferred from the mechanical response
       \end{itemize}
-      \textbf{Goal:} build a mechanical FEM model that links deposited mass distributions to measurable resonance frequencies.
+      \uncover<+->{\textbf{Goal:} Build a mechanical FEM model that links deposited mass distributions to measurable resonance frequency shifts.}
     \end{block}
-  \end{columns}
-\end{frame}
-
-\begin{frame}{Research questions}
-  \begin{block}{Main question}
-    Can a purely mechanical FEM simulation predict deposited sample mass from the eigenfrequency response of an EMILIE membrane?
-  \end{block}
-  \vspace{0.25cm}
-  \begin{itemize}
-    \item How accurately can the membrane prestress be estimated?
-    \item Are unsampled membranes reproduced over different geometries and manufacturers?
-    \item Do sampled membranes behave as expected from added mass alone?
-    \item Where are the limits imposed by experiment and material behavior?
-  \end{itemize}
 \end{frame}
 
 \begin{frame}{Simulation model}
+  \footnotesize
+  \setlength{\abovedisplayskip}{0.08cm}
+  \setlength{\belowdisplayskip}{0.08cm}
   \begin{columns}[T,onlytextwidth]
-    \column{0.8\textwidth}
+    \column{0.62\textwidth}
     \begin{itemize}
-      \item The membrane is modeled as a two-dimensional prestressed elastic structure.
-      \item Bending stiffness is negligible for the considered modes.
-      \item Two coupled PDEs:
+      \setlength\itemsep{0pt}
+      \item<2-> The membrane is modeled as a two-dimensional prestressed elastic structure.
+      \item<3-> Bending stiffness is negligible for the considered modes.
+      \item<4-> Two coupled PDEs:
       \begin{itemize}
-        \item static elasticity for displacement and stress redistribution
+        \setlength\itemsep{0pt}
+        \item<5-> static elasticity for displacement and stress redistribution
             \[
               -\nabla\cdot\fatsig_\fatu = \nabla\cdot\fatsig_p,
             \]
-        \item wave eigenvalue problem for resonance frequencies
+        \item<6-> wave eigenvalue problem for resonance frequencies
         \[
             \nabla \cdot \left( \fatsig(x,y) \cdot \nabla u \right) 
     = \rho \, \frac{\partial^2 u(x,y,t)}{\partial t^2}.
     \]
       \end{itemize}
-      \item The model is implemented in \ngsolve therefore highly parametrizable.
+      \item<7-> The model is implemented in \ngsolve therefore highly parametrizable and efficient (\SI{1}{\second} computational time on a standard laptop).
     \end{itemize}
+    \column{0.34\textwidth}
+    \begin{minipage}[t][0.76\textheight][b]{\linewidth}
+      \begin{block}<5->{Variables}
+        \tiny
+        \setlength{\parskip}{0.04cm}
+        \uncover<5->{$\fatu$: in-plane displacement field.\par}
+        \uncover<5->{$\fatsig_\fatu$: elastic stress caused by $\fatu$.\par}
+        \uncover<5->{$\fatsig_p$: prescribed prestress tensor.\par}
+        \uncover<6->{$u(x,y,t)$: transverse vibration displacement.\par}
+        \uncover<6->{$\fatsig(x,y)$: redistributed membrane stress.\par}
+        \uncover<6->{$\rho$: effective mass density.\par}
+        \uncover<6->{$x,y,t$: coordinates and time.\par}
+      \end{block}
+    \end{minipage}
   \end{columns}
 \end{frame}
 
@@ -150,26 +171,26 @@
     \includegraphics[height=0.55\textheight]{empty_membrane.png}
   \end{columns}
   \vspace{0.25cm}
-  \begin{itemize}
+  \begin{itemize}[<+(1)->]
     \item Perforation modeled by effective density and effective prestress.
     \item Electrodes included through geometry, mass, and prestress.
-    \item Sample deposits modeled as approximately circular coffee-ring mass distributions.
+    \item Sample deposits also resolved in the mesh, shown later.
   \end{itemize}
 \end{frame}
 
 \begin{frame}{Prestress estimation}
   \centering
-  \includegraphics[scale=\plotTextMatchScale]{prestress_estimator.pdf}
+  \includegraphics[scale=\plotTextMatchScale]{prestress_estimator_with_corr.pdf}
   \vspace{-0.05cm}
 
-  \begin{itemize}
+  \begin{itemize}[<+(1)->]
     \setlength\itemsep{0pt}
     \item The model allows for an improved estimate of the prestress, which is in use now.
   \end{itemize}
 \end{frame}
 
 
-\begin{frame}{Mode shapes and mass position}
+\begin{frame}{Mode shapes}
   \begin{columns}[T,onlytextwidth]
     \column{0.33\textwidth}
     \includegraphics[width=\linewidth]{modeshape_(1,1).png}
@@ -178,28 +199,70 @@
     \includegraphics[width=\linewidth]{modeshape_(2,1).png}
     \centering $(2,1)$
     \column{0.33\textwidth}
-    \includegraphics[width=\linewidth]{modeshape_(3,1)_sampled.png}
-    \centering $(3,1)$ with sample
+    \includegraphics[width=\linewidth]{modeshape_(3,1).png}
+    \centering $(3,1)$
   \end{columns}
   \vspace{0.35cm}
-  \begin{itemize}
-    \item Different modes overlap differently with the deposited mass.
-    \item This makes several eigenfrequencies more informative than a single resonance.
-    \item Strong deposits can distort mode shapes and complicate mode identification.
+  \begin{itemize}[<+(1)->]
+    \item Multiple Eigenfrequencies can be measured and simulated, one for each mode shape.
   \end{itemize}
+\end{frame}
+
+\begin{frame}{Position detection}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.33\textwidth}
+    \modeShapeWithCenterDot{modeshape_(1,1).png}
+    \centering $(1,1)$
+    \column{0.33\textwidth}
+    \modeShapeWithCenterDot{modeshape_(2,1).png}
+    \centering $(2,1)$
+    \column{0.33\textwidth}
+    \modeShapeWithCenterDot{modeshape_(3,1).png}
+    \centering $(3,1)$
+  \end{columns}
+  \vspace{0.35cm}
+  \begin{itemize}[<+(1)->]
+    \item Different modes overlap differently with the deposited mass.
+    \item From the relative frequency shifts of different modes, the sample position can be inferred.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Coffee-ring samples}
+  \centering
+  \includegraphics[scale=0.4,trim=0 6 0 6,clip]{pngs/coffeering.png}
+  \vspace{-0.05cm}
+  \begin{itemize}[<+(1)->]
+    \item Sampes are deposited in in solvent droplets.
+    \item As the solvent evaporates, the sampled material remains mostly on the rim of the droplet.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Coffee-ring samples}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.33\textwidth}
+    \modeShapeWithCenterRing{modeshape_(1,1)_sampled.png}{\sampleRingRadius}{\sampleRingThickness}
+    \centering $(1,1)$
+    \column{0.33\textwidth}
+    \modeShapeWithCenterRing{modeshape_(2,1)_sampled.png}{\sampleRingRadius}{\sampleRingThickness}
+    \centering $(2,1)$
+    \column{0.33\textwidth}
+    \modeShapeWithCenterRing{modeshape_(3,1)_sampled.png}{\sampleRingRadius}{\sampleRingThickness}
+    \centering $(3,1)$
+  \end{columns}
+
 \end{frame}
 
 \begin{frame}{Validation: Unsampled membranes}
   \begin{columns}[T,onlytextwidth]
     \column{0.38\textwidth}
-    \begin{itemize}
+    \begin{itemize}[<+(1)->]
       \item Membrane prestress is fitted using the $(1,1)$ mode.
       \item Higher modes are then predicted by the same mechanical model.
       \item Agreement is within experimental error bounds for a broad parameter range.
     \end{itemize}
     \vspace{0.15cm}
-    \begin{block}{Interpretation}
-      The model is reliable for estimating membrane prestress and reproducing the baseline eigenfrequency spectrum.
+    \begin{block}<+(1)->{Good News}
+      The model accurately reproduces the measured eigenfrequencies of unsampled membranes, which is a prerequisite for mass detection.
     \end{block}
     \column{0.58\textwidth}
     \centering
@@ -207,12 +270,23 @@
   \end{columns}
 \end{frame}
 
+\begin{frame}{Validation for other parameters}
+  \centering
+  \includegraphics[scale=1.05,trim=0 6 0 6,clip]{other_parameters_mean_abs_fem_exp_difference.pdf}
+  \vspace{-0.05cm}
+
+  \begin{itemize}[<+(1)->]
+    \setlength\itemsep{0pt}
+    \item Across a broad parameter range, the simulation results are within the experimental error bounds.
+  \end{itemize}
+\end{frame}
+
 \begin{frame}{Polystyrene: Measurement}
   \centering
   \includegraphics[scale=\plotTextMatchScale]{exp_freqs_sampled_PS.pdf}
   \vspace{-0.05cm}
 
-  \begin{itemize}
+  \begin{itemize}[<+(1)->]
     \setlength\itemsep{0pt}
     \item PS deposits from \SI{625}{\pico\gram} to \SI{40}{\nano\gram} show measurable frequency shifts.
   \end{itemize}
@@ -223,20 +297,9 @@
   \includegraphics[scale=\plotTextMatchScale]{fem_freqs_sampled_PS.pdf}
   \vspace{-0.05cm}
 
-  \begin{itemize}
+  \begin{itemize}[<+(1)->]
     \setlength\itemsep{0pt}
-    \item Trends are reproduced qualitatively by a zero-prestress sample model.
-  \end{itemize}
-\end{frame}
-
-\begin{frame}{Polystyrene: Model error}
-  \centering
-  \includegraphics[scale=\plotTextMatchScale]{mean_abs_fem_exp_difference_sampled.pdf}
-  \vspace{-0.05cm}
-
-  \begin{itemize}
-    \setlength\itemsep{0pt}
-    \item Quantitative deviations likely depend on unresolved details of the coffee-ring distribution.
+    \item Trends are reproduced qualitatively.
   \end{itemize}
 \end{frame}
 
@@ -244,7 +307,7 @@
 \begin{frame}{Polystyrene: Mass estimation and limits}
   \begin{columns}[T,onlytextwidth]
     \column{0.28\textwidth}
-    \begin{itemize}
+    \begin{itemize}[<+(1)->]
       \setlength\itemsep{0.15cm}
       \item Ideal mass resolution: $\Delta m_\mathrm{ideal} \approx \pm \SI{1.25}{\nano\gram}$.
       \item Current practical accuracy: $\Delta m_\mathrm{current} \approx \pm \SI{5}{\nano\gram}$.
@@ -255,12 +318,19 @@
   \end{columns}
 \end{frame}
 
+\begin{frame}{Polystyrene: Model error}
+  \centering
+  \includegraphics[scale=\plotTextMatchScale]{mean_abs_fem_exp_difference_sampled.pdf}
+  \vspace{-0.05cm}
+
+\end{frame}
+
 \begin{frame}{Polypropylene: Measurement}
   \centering
   \includegraphics[scale=\plotTextMatchScale]{exp_freqs_sampled_PP.pdf}
   \vspace{-0.05cm}
 
-  \begin{itemize}
+  \begin{itemize}[<+(1)->]
     \setlength\itemsep{0pt}
     \item PP deposits show almost no systematic frequency decrease with increasing mass.
     \item Added mass alone cannot explain the measurements.
@@ -273,19 +343,19 @@
     \centering
     \includegraphics[scale=\plotTextMatchScale]{sample_prestress_analysis.pdf}
     \column{0.35\textwidth}
-    \begin{itemize}
+    \begin{itemize}[<+(1)->]
       \item Agreement improves when internal prestress in the PP deposit is introduced.
     \end{itemize}
     \vspace{0.25cm}
-    \begin{block}{Consequence}
-      Eigenfrequency shifts are not only a mass signal; they can be masked or reversed by sample prestress.
+    \begin{block}<+(1)->{Consequence}
+      Eigenfrequency shifts can be masked or even reversed by sample prestress.
     \end{block}
   \end{columns}
 \end{frame}
 
 
 \begin{frame}{Conclusions}
-  \begin{itemize}
+  \begin{itemize}[<+(1)->]
     \item A two-dimensional FEM framework for sampled nanomembranes was developed in \ngsolve.
     \item Unsampled membranes are reproduced within experimental uncertainty after prestress fitting.
     \item Mass prediction is feasible for sufficiently large PS samples, roughly above \SI{10}{\nano\gram}.
@@ -299,6 +369,41 @@
 
   \vspace{0.6cm}
   \Large Questions?
+\end{frame}
+
+\begin{frame}{MSA Vibrometer}
+  \centering
+  \includegraphics[scale = 0.07]{pngs/MSA_Vibrometer.jpg}
+  \vspace{-0.05cm}
+
+\end{frame}
+
+\begin{frame}{Nanobeads}
+  \centering
+  \includegraphics[width=\linewidth]{pngs/Nanobeads.png}
+  \vspace{-0.05cm}
+
+\end{frame}
+
+\begin{frame}{Influence of the bending stiffness}
+  Assume a homogeneous membrane described by the following PDE:
+  \begin{equation}
+    \sigma \nabla^2 u + D_p \nabla^4 u - \frac{\partial^2 u}{\partial t^2} = 0.
+    \label{eq:kirchhoff_wave}
+\end{equation}
+  The eigenfrequency found with \SI{25}{\mega\pascal} is
+\[
+\omega_{31} \approx \SI{9.1e5}{\per\second}.
+\] 
+Repeating the calculation while omitting the bending term yields 
+\[
+\omega_{31,\mathrm{nb}} \approx \SI{9.1e5}{\per\second}.
+\] 
+The relative difference is
+\[
+\frac{|\omega_{31} - \omega_{31,\mathrm{nb}}|}{\omega_{31}} \approx 5.4 \cdot 10^{-12}.
+\]
+
 \end{frame}
 
 \end{document}
